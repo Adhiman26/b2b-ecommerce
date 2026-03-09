@@ -1,125 +1,215 @@
-import { UploadCloud, FileText, CheckCircle, CreditCard, Clock } from 'lucide-react';
+import { useStore } from '../store';
+import { ShoppingCart, FileText, Upload, CreditCard, Trash2, ListPlus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Checkout() {
-    return (
-        <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '0' }}>
-            <h1 style={{ marginBottom: '8px' }}>Procurement Cart & Wallet</h1>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>Finalize order details, attach PO, and process 30/60-day credit terms.</p>
+    const { cart, cartTotal, cartName, setCartName, jobSite, setJobSite, removeFromCart, updateCartQty, clearCart } = useStore();
 
-            <div className="sidebar-layout">
-                <div className="main-col" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    return (
+        <div className="container" style={{ padding: '32px 24px' }}>
+            {/* Breadcrumbs */}
+            <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
+                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Cart</span>
+            </div>
+            <h1 style={{ marginBottom: '8px' }}>B2B Enquiry Summary</h1>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>Review parts and specify logistics to submit an official request for quotation.</p>
+
+            <div className="grid-2" style={{ gridTemplateColumns: '1fr 400px', gap: '32px', alignItems: 'start' }}>
+
+                {/* Left Col: Cart Details & Job Site Assignment */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
                     <div className="card">
                         <div className="card-header">
-                            <h2>Verified Cart Items</h2>
+                            <h2>Job Site & Meta-Data Assignment</h2>
                         </div>
                         <div className="card-body">
+                            <div className="grid-2">
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-main)' }}>Named Requisition / Cart ID</label>
+                                    <input
+                                        type="text"
+                                        value={cartName}
+                                        onChange={e => setCartName(e.target.value)}
+                                        placeholder="e.g. Chiller Unit 2 Overhaul"
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-main)' }}>Linked Job Site / Asset ID</label>
+                                    <select value={jobSite} onChange={e => setJobSite(e.target.value)}>
+                                        <option value="">Select Corporate Site...</option>
+                                        <option value="TechPark_B">Tech Park Tower B</option>
+                                        <option value="Retail_U4">Retail Mall Unit 4</option>
+                                        <option value="DataC_M">Main Data Center</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card">
+                        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h2>Parts Requisition List</h2>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <span className="badge badge-green">{cart.length} OEMs Selected</span>
+                                {cart.length > 0 && (
+                                    <button
+                                        onClick={clearCart}
+                                        style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}
+                                    >
+                                        Clear All Items
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        <div className="card-body" style={{ padding: 0 }}>
                             <table className="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Item / Spec</th>
+                                        <th style={{ width: '45%' }}>SKU / Product Info</th>
+                                        <th>Warehouse</th>
                                         <th>Qty</th>
-                                        <th>Rate</th>
-                                        <th>Net Amount</th>
+                                        <th style={{ textAlign: 'right' }}>Net Rate</th>
+                                        <th style={{ textAlign: 'right' }}>Line Total</th>
+                                        <th style={{ textAlign: 'right', width: '60px' }}></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <strong>Copeland Scroll 5-Ton</strong><br />
-                                            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>ZPS51K5-PFV • 208/230V</span>
-                                        </td>
-                                        <td>1</td>
-                                        <td>$845.00</td>
-                                        <td>$845.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Carrier Run Capacitor</strong><br />
-                                            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>45/5 MFD 440V Dual</span>
-                                        </td>
-                                        <td>2</td>
-                                        <td>$18.50</td>
-                                        <td>$37.00</td>
-                                    </tr>
+                                    {cart.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" style={{ padding: '64px 32px', textAlign: 'center' }}>
+                                                <ShoppingCart size={48} color="var(--color-border)" style={{ margin: '0 auto 24px', display: 'block' }} />
+                                                <h3 style={{ fontSize: '20px', color: 'var(--text-main)', marginBottom: '8px', fontWeight: 'bold' }}>Your Requisition is Empty</h3>
+                                                <p style={{ color: 'var(--text-secondary)', marginBottom: '32px', fontSize: '15px' }}>Add components to your cart to begin the checkout process.</p>
+                                                <Link to="/" className="btn btn-primary" style={{ padding: '14px 24px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '15px' }}>
+                                                    Continue Shopping
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        cart.map((item, idx) => (
+                                            <tr key={idx}>
+                                                <td>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{item.sku}</span>
+                                                        <strong>{item.name}</strong>
+                                                        <button
+                                                            onClick={() => { removeFromCart(item.id); alert('Item moved to Project List.'); }}
+                                                            style={{ background: 'none', border: 'none', padding: 0, marginTop: '8px', fontSize: '12px', color: 'var(--color-blue)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 'bold' }}
+                                                        >
+                                                            <ListPlus size={14} /> Move to Project List
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td style={{ verticalAlign: 'top', paddingTop: '16px' }}>{item.location.split(' ')[0]}</td>
+                                                <td style={{ verticalAlign: 'top', paddingTop: '12px' }}>
+                                                    <input
+                                                        type="number"
+                                                        value={item.qty}
+                                                        onChange={(e) => updateCartQty(item.id, e.target.value)}
+                                                        min="1"
+                                                        style={{ width: '70px', height: '36px', padding: '4px 8px', border: '1px solid var(--color-border)', borderRadius: '4px', outline: 'none', fontSize: '14px' }}
+                                                        onFocus={e => e.currentTarget.style.borderColor = 'var(--color-blue)'}
+                                                        onBlur={e => e.currentTarget.style.borderColor = 'var(--color-border)'}
+                                                    />
+                                                </td>
+                                                <td style={{ textAlign: 'right', verticalAlign: 'top', paddingTop: '16px' }}>₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                <td style={{ textAlign: 'right', fontWeight: 'bold', verticalAlign: 'top', paddingTop: '16px' }}>₹{(item.price * item.qty).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                                <td style={{ textAlign: 'right', verticalAlign: 'top', paddingTop: '12px' }}>
+                                                    <button
+                                                        onClick={() => removeFromCart(item.id)}
+                                                        style={{ background: 'none', border: 'none', color: '#ef4444', padding: '6px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: '4px', transition: 'all 0.2s' }}
+                                                        title="Remove Item"
+                                                        onMouseOver={e => e.currentTarget.style.background = '#fef2f2'}
+                                                        onMouseOut={e => e.currentTarget.style.background = 'transparent'}
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-                    <div className="card">
-                        <div className="card-header">
-                            <h2>B2B Payment & Documentation</h2>
-                        </div>
-                        <div className="card-body">
-                            <div className="grid-2" style={{ gap: '24px' }}>
-                                <div>
-                                    <h3 style={{ fontSize: '14px', marginBottom: '8px', color: 'var(--text-secondary)' }}>Payment Method</h3>
-                                    <div style={{ padding: '16px', border: '1px solid var(--color-green)', borderRadius: 'var(--radius-sm)', background: 'var(--color-green-light)', position: 'relative' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                                            <Clock size={16} color="var(--color-green)" />
-                                            <strong style={{ color: 'var(--color-green)' }}>Net 30/60 Credit Line</strong>
-                                        </div>
-                                        <p style={{ fontSize: '13px', color: 'var(--color-green)' }}>Approved Credit Limit: $25,000.00</p>
-                                        <p style={{ fontSize: '13px', color: 'var(--color-green)', fontWeight: 'bold' }}>Available Balance: $14,280.00</p>
-                                        <CheckCircle style={{ position: 'absolute', top: '16px', right: '16px' }} color="var(--color-green)" />
-                                    </div>
-
-                                    <button className="btn btn-secondary" style={{ width: '100%', marginTop: '12px' }}>
-                                        <CreditCard size={16} /> Pay by Corp Card Instead
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <h3 style={{ fontSize: '14px', marginBottom: '8px', color: 'var(--text-secondary)' }}>Upload Purchase Order (PO)</h3>
-                                    <div style={{ height: '90px', border: '2px dashed var(--color-border)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', color: 'var(--text-secondary)', cursor: 'pointer', background: '#f8fafc' }}>
-                                        <UploadCloud size={24} style={{ marginBottom: '4px' }} />
-                                        <span style={{ fontSize: '13px', fontWeight: 'bold' }}>Drag & Drop PO PDF</span>
-                                    </div>
-
-                                    <h3 style={{ fontSize: '14px', margin: '16px 0 8px', color: 'var(--text-secondary)' }}>Job Reference / Cost Center</h3>
-                                    <input type="text" placeholder="e.g., SITE-14 Tech Park Tower B" style={{ width: '100%' }} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <div className="sidebar">
+                {/* Right Col: Quotation & Fulfillment Details */}
+                <div style={{ position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
                     <div className="card">
                         <div className="card-header">
-                            <h2>GST Invoice Summary</h2>
+                            <h2>Quotation & Fulfillment Details</h2>
                         </div>
                         <div className="card-body">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', fontSize: '13px' }}>
-                                <span>Subtotal (Net)</span>
-                                <strong>$882.00</strong>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', fontSize: '13px' }}>
-                                <span>Standard Delivery (2 Days)</span>
-                                <strong>$45.00</strong>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', fontSize: '13px', borderBottom: '1px solid var(--color-border)', paddingBottom: '16px' }}>
-                                <span className="badge badge-amber">GST / SGST (18%)</span>
-                                <strong>$166.86</strong>
+
+                            {/* Fulfillment Options */}
+                            <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', marginBottom: '12px', color: 'var(--text-main)' }}>Select Service Preference</label>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+                                <label style={{ display: 'flex', gap: '12px', padding: '12px', border: '1px solid var(--color-border)', borderRadius: '4px', background: 'var(--bg-canvas)', cursor: 'pointer', alignItems: 'flex-start' }}>
+                                    <input type="radio" name="fulfillment" defaultChecked style={{ width: 'auto', marginTop: '4px', accentColor: 'var(--color-blue)' }} />
+                                    <div>
+                                        <strong style={{ display: 'block', color: 'var(--color-blue)' }}>Self-Pickup (Ex-Works)</strong>
+                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Select nearest warehouse for collection</span>
+                                    </div>
+                                </label>
+
+                                <label style={{ display: 'flex', gap: '12px', padding: '12px', border: '1px solid var(--color-border)', borderRadius: '4px', cursor: 'pointer', alignItems: 'center' }}>
+                                    <input type="radio" name="fulfillment" style={{ width: 'auto', accentColor: 'var(--color-blue)' }} />
+                                    <div>
+                                        <strong style={{ display: 'block' }}>Delivery to Site</strong>
+                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Include freight estimate in the quote</span>
+                                    </div>
+                                </label>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', fontSize: '18px' }}>
-                                <span>Total Payload</span>
-                                <strong>$1,093.86</strong>
+                            {/* Reference Logic */}
+                            <div style={{ marginBottom: '16px' }}>
+                                <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-main)' }}>Client/Project Reference Number</label>
+                                <input type="text" placeholder="e.g. Ref: Hilt-AC-2024" style={{ width: '100%', border: '1px solid var(--color-border)', padding: '10px 12px', borderRadius: '4px', fontSize: '14px' }} />
+                                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>For your internal tracking purposes.</div>
                             </div>
 
-                            <div style={{ background: '#f8fafc', padding: '12px', borderRadius: 'var(--radius-sm)', marginBottom: '24px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                                <strong>Term Note:</strong> Invoice #INV-8890 will be generated upon dispatch. Due date automatically set to Net 30.
+                            <div style={{ marginBottom: '32px' }}>
+                                <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-main)' }}>Quote Required By</label>
+                                <select style={{ width: '100%', border: '1px solid var(--color-border)', padding: '10px 12px', borderRadius: '4px', fontSize: '14px', background: 'white' }}>
+                                    <option value="Urgent">Urgent &lt; 4hrs</option>
+                                    <option value="Same Day">Same Day</option>
+                                    <option value="Within 24hrs">Within 24hrs</option>
+                                </select>
                             </div>
 
-                            <button className="btn btn-primary" style={{ width: '100%', minHeight: '48px', marginBottom: '12px' }}>
-                                <CheckCircle size={16} /> Authorize Order ($1,093.86)
-                            </button>
-                            <button className="btn btn-secondary" style={{ width: '100%' }}>
-                                <FileText size={16} /> Preview Proforma Invoice
-                            </button>
+                            {/* Invoice Summary */}
+                            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '4px', marginBottom: '24px', border: '1px dashed var(--color-border)' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', color: 'var(--text-secondary)' }}>
+                                    <span>Material Subtotal</span>
+                                    <span>₹{cartTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                                    <span>Estimated Tax (GST 18%)</span>
+                                    <span>₹{(cartTotal * 0.18).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px dashed var(--color-border)', paddingTop: '16px', fontWeight: 'bold', fontSize: '18px' }}>
+                                    <span>Estimated Total</span>
+                                    <span style={{ color: 'var(--color-blue)' }}>₹{(cartTotal * 1.18).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                </div>
+                            </div>
+
+                            {/* Actions */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <button className="btn btn-primary" style={{ height: '48px', fontSize: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }} disabled={cart.length === 0} onClick={() => alert('Quotation Request Submitted Successfully!')}>
+                                    <FileText size={18} /> Submit Request for Quotation
+                                </button>
+                                <button className="btn btn-secondary" style={{ height: '48px', fontSize: '14px', background: 'transparent', border: '1px solid var(--color-border)' }}>
+                                    Save Draft (Supervisor Edit)
+                                </button>
+                            </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

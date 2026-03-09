@@ -1,27 +1,16 @@
-# HVAC Pulse B2B - Workflow-Integrated E-commerce Ecosystem
+# React + Vite
 
-## Architecture & Overview
-HVAC Pulse is a workflow-integrated B2B platform moving away from traditional retail "shopping" and towards a "Field-to-Finance" lifecycle involving three distinct user roles: Sameer (Field Technician), Shilpa (Operations Supervisor), and Rajesh (Procurement Manager).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 1. Role-Based Capabilities
-- **Technician View (Sameer):** Mobile-first interface utilizing live `getUserMedia` hardware inputs to scan unit QRs. State locks quoting actions until verified, preventing incorrect catalog ordering from the field. 
-- **Supervisor View (Shilpa):** Desktop-optimized command center utilizing reactive Zustand global state to intercept pushed technician Draft RFQs. Features a Kanban mapping tool and a direct Reactive Margin slider linked to an auto-generating PDF quote engine.
-- **Procurement View (Rajesh):** High-density audit dashboard providing a "Technical Comparison Matrix". Replaces traditional B2B cards with a true 15-parameter spec sheet and dynamic diff-highlighting for mismatched stats (e.g. SEER2, Load Amps).
+Currently, two official plugins are available:
 
-## 2. Core Modules Implemented
-- **Operational Home/Dashboard:** Unified component utilizing hot-swapping Role Selectors to toggle interfaces seamlessly without forcing relogging for demos.
-- **Technical Product Detail Page (PDP):** Vector schematic emphasis with dynamic "Verified Fit" widgets simulating external DB validation logic for parts.
-- **B2B Transaction Layer:** End-state flow dropping credit card UIs for "Purchase Order (PO) Upload" dropzones and an integrated 30/60-day Line of Credit tracker. Validates net payload with built-in GST summary invoicing.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 3. Design System Standards
-- Pure Vanilla CSS (`index.css`) utilizing CSS Variables for strict tracking of an Atomic Design framework.
-- Minimal white space emphasizing B2B data density.
-- Status badging utilized uniformly (Green/Amber/Red) to communicate risk directly.
+## React Compiler
 
-## Running Locally
-This app is Vite/React based:
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-```bash
-npm install
-npm run dev
-```
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

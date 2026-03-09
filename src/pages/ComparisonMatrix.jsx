@@ -1,256 +1,160 @@
-import { XCircle, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import { useStore } from '../store';
+import { ShoppingCart, CheckCircle, FileText, Download, Shield, Copy, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function ComparisonMatrix() {
-    const parts = [
+    const { addToCart } = useStore();
+    const [highlightDiff, setHighlightDiff] = useState(false);
+
+    // Mock selected products for comparison
+    const products = [
         {
-            id: 1,
-            model: 'Copeland ZPS51K5-PFV',
-            brand: 'Copeland Scroll',
-            gas: 'R-410A',
-            seer2: 'Up to 18',
-            tonnage: '5 Ton',
-            voltage: '208/230V 1-PH',
-            amperage: '19.8 RLA',
-            lra: '109.0 LRA',
-            capacity: '51,000 BTU/h',
-            connectionSuction: '7/8" Stub',
-            connectionLiquid: '1/2" Stub',
-            oilType: 'POE',
-            dimensions: '9.69" x 9.69" x 16.92"',
-            weight: '84.5 lbs',
-            warranty: '10-Year Limited',
-            price: '$845.00',
-            stock: '94 in stock',
-            diffSEER2: false,
-            diffAmperage: false,
-            diffGas: false,
-            diffLRA: false,
+            id: 1, sku: 'COP-ZPS51K5', name: 'Copeland Scroll 5-Ton R-410A', price: 68500.00,
+            specs: {
+                // Electrical
+                voltage: '208/230V', phase: '1-Phase', rla: '19.8 A', lra: '109.0 A',
+                // Mechanical
+                tonnage: '5 Ton', refrigerant: 'R-410A', btu: '51,000 BTU/h', connection: '7/8" Stub',
+                // Compliance
+                bee: '4 Star Rating', warranty: '10-Year Limited', sds: 'Available'
+            }
         },
         {
-            id: 2,
-            model: 'Bristol H29B35UABCA',
-            brand: 'Bristol Compressors',
-            gas: 'R-410A',
-            seer2: 'Up to 16',
-            tonnage: '5 Ton',
-            voltage: '208/230V 1-PH',
-            amperage: '22.4 RLA',
-            lra: '137.0 LRA',
-            capacity: '49,500 BTU/h',
-            connectionSuction: '7/8" Stub',
-            connectionLiquid: '1/2" Stub',
-            oilType: 'POE',
-            dimensions: '10.5" x 10.5" x 15.2"',
-            weight: '92.0 lbs',
-            warranty: '5-Year Limited',
-            price: '$790.00',
-            stock: '12 in stock',
-            diffSEER2: true,
-            diffAmperage: true,
-            diffGas: false,
-            diffLRA: true,
+            id: 2, sku: 'BRI-H29B35U', name: 'Bristol 5-Ton R-410A Hermetic', price: 63200.00,
+            specs: {
+                voltage: '208/230V', phase: '1-Phase', rla: '21.0 A', lra: '115.0 A',
+                tonnage: '5 Ton', refrigerant: 'R-410A', btu: '50,500 BTU/h', connection: '7/8" Stub',
+                bee: '3 Star Rating', warranty: '5-Year Limited', sds: 'Available'
+            }
         },
         {
-            id: 3,
-            model: 'LG APB051KAA',
-            brand: 'LG Electronics',
-            gas: 'R-32',
-            seer2: 'Up to 20',
-            tonnage: '5 Ton',
-            voltage: '208/230V 1-PH',
-            amperage: '18.5 RLA',
-            lra: '98.0 LRA',
-            capacity: '52,000 BTU/h',
-            connectionSuction: '7/8" Stub',
-            connectionLiquid: '3/8" Stub',
-            oilType: 'PVE',
-            dimensions: '9.4" x 9.4" x 17.1"',
-            weight: '82.0 lbs',
-            warranty: '10-Year Limited',
-            price: '$920.00',
-            stock: 'Backordered',
-            diffSEER2: true,
-            diffAmperage: true,
-            diffGas: true,
-            diffLRA: true,
-        },
-        {
-            id: 4,
-            model: 'Danfoss HRP051T4',
-            brand: 'Danfoss Scrolls',
-            gas: 'R-410A',
-            seer2: 'Up to 18',
-            tonnage: '5 Ton',
-            voltage: '208/230V 1-PH',
-            amperage: '19.5 RLA',
-            lra: '110.0 LRA',
-            capacity: '51,200 BTU/h',
-            connectionSuction: '7/8" Rotolock',
-            connectionLiquid: '1/2" Rotolock',
-            oilType: 'POE',
-            dimensions: '9.5" x 9.5" x 16.8"',
-            weight: '85.0 lbs',
-            warranty: '1-Year Commercial',
-            price: '$865.00',
-            stock: '4 in stock',
-            diffSEER2: false,
-            diffAmperage: false,
-            diffGas: false,
-            diffLRA: false,
+            id: 4, sku: 'LG-APB051K', name: 'LG 5-Ton R-32 Inverter', price: 78500.00,
+            specs: {
+                voltage: '208/230V', phase: '1-Phase', rla: '18.5 A', lra: '95.0 A',
+                tonnage: '5 Ton', refrigerant: 'R-32', btu: '52,000 BTU/h', connection: '7/8" Stub',
+                bee: '5 Star Rating', warranty: '10-Year Limited', sds: 'Available'
+            }
         }
     ];
 
-    return (
-        <div>
-            <h1 style={{ marginBottom: '8px' }}>Technical Comparison Matrix</h1>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Review spec differences before procurement validation.</p>
+    const rows = [
+        { group: 'Electrical', key: 'electrical_header', isHeader: true },
+        { label: 'Voltage', key: 'voltage' },
+        { label: 'Phase', key: 'phase' },
+        { label: 'Rated Load Amps (RLA)', key: 'rla' },
+        { label: 'Locked Rotor Amps (LRA)', key: 'lra' },
 
-            <div className="table-wrapper" style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '24px', boxShadow: 'var(--shadow-sm)' }}>
-                <table className="data-table" style={{ fontSize: '14px' }}>
-                    <thead>
+        { group: 'Mechanical', key: 'mechanical_header', isHeader: true },
+        { label: 'Tonnage', key: 'tonnage' },
+        { label: 'Refrigerant Type', key: 'refrigerant' },
+        { label: 'Cooling Capacity (BTU/h)', key: 'btu' },
+        { label: 'Connection Sizes', key: 'connection' },
+
+        { group: 'Compliance & Warranty', key: 'compliance_header', isHeader: true },
+        { label: 'BEE Star Rating', key: 'bee' },
+        { label: 'Warranty Term', key: 'warranty' },
+        { label: 'Safety Data Sheet (SDS)', key: 'sds' }
+    ];
+
+    const hasDifference = (key) => {
+        const val = products[0].specs[key];
+        return !products.every(p => p.specs[key] === val);
+    };
+
+    return (
+        <div className="container" style={{ padding: '32px 24px' }}>
+            {/* Breadcrumbs */}
+            <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
+                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Compare</span>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
+                <div>
+                    <h1 style={{ marginBottom: '8px' }}>Technical Comparison Matrix</h1>
+                    <p style={{ color: 'var(--text-secondary)', margin: 0 }}>Auditing {products.length} selected compressor units.</p>
+                </div>
+
+                {/* Control Bar: Toggle Switch */}
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 600 }}>
+                    Highlight Differences Only
+                    <div style={{ width: '40px', height: '24px', background: highlightDiff ? 'var(--color-blue)' : '#cbd5e1', borderRadius: '12px', position: 'relative', transition: '0.3s' }}>
+                        <div style={{ width: '20px', height: '20px', background: 'white', borderRadius: '3px', position: 'absolute', top: '2px', left: highlightDiff ? '18px' : '2px', transition: '0.3s' }}></div>
+                    </div>
+                    {/* Hidden checkbox for accessibility */}
+                    <input type="checkbox" checked={highlightDiff} onChange={() => setHighlightDiff(!highlightDiff)} style={{ display: 'none' }} />
+                </label>
+            </div>
+
+            <div className="card" style={{ overflowX: 'auto', maxHeight: 'calc(100vh - 150px)', overflowY: 'auto' }}>
+                <table className="data-table" style={{ minWidth: '1000px', width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+                    <colgroup>
+                        <col style={{ width: '25%' }} />
+                        <col style={{ width: '25%' }} />
+                        <col style={{ width: '25%' }} />
+                        <col style={{ width: '25%' }} />
+                    </colgroup>
+
+                    {/* Sticky Action Header */}
+                    <thead style={{ position: 'sticky', top: '0', zIndex: 10, background: 'var(--bg-surface)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
                         <tr>
-                            <th style={{ width: '15%' }}>Spec Parameter</th>
-                            {parts.map(p => (
-                                <th key={p.id} style={{ width: '21.25%' }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 'normal' }}>{p.brand}</span>
-                                        <strong style={{ fontSize: '16px' }}>{p.model}</strong>
+                            <th style={{ background: 'var(--bg-surface)', borderBottom: '2px solid var(--color-border)', borderRight: '1px solid var(--color-border)' }}></th>
+                            {products.map((p, idx) => (
+                                <th key={p.id} style={{ background: 'var(--bg-surface)', borderBottom: '2px solid var(--color-border)', padding: '24px 16px', verticalAlign: 'top', borderRight: idx < products.length - 1 ? '1px solid var(--color-border)' : 'none' }}>
+                                    <div style={{ display: 'flex', gap: '16px' }}>
+                                        {/* Vector Thumbnail */}
+                                        <div style={{ width: '64px', height: '64px', border: '1px solid var(--color-border)', borderRadius: '4px', background: 'white', flexShrink: 0, padding: '4px' }}>
+                                            <img src="https://placehold.co/100x100/ffffff/1e293b?text=CAD" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="CAD" />
+                                        </div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                                            <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                                                <Link to={`/product/${p.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>{p.sku}</Link>
+                                            </h2>
+                                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+                                            <div style={{ fontSize: '18px', fontWeight: 'bold', marginTop: '8px' }}>
+                                                ₹{p.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                            </div>
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{ width: '100%', marginTop: 'auto', padding: '10px', fontSize: '13px' }}
+                                                onClick={() => { addToCart({ ...p, qty: 1, location: 'Primary Warehouse' }, 1); alert('Item verified & routed to requisition.'); }}
+                                            >
+                                                <Check size={16} /> Select & Approve
+                                            </button>
+                                        </div>
                                     </div>
                                 </th>
                             ))}
                         </tr>
                     </thead>
+
                     <tbody>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Nominal Tonnage</td>
-                            {parts.map(p => (
-                                <td key={`ton-${p.id}`}>
-                                    <span>{p.tonnage}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Cooling Capacity</td>
-                            {parts.map(p => (
-                                <td key={`cap-${p.id}`}>
-                                    <span>{p.capacity}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Refrigerant Gas Type</td>
-                            {parts.map(p => (
-                                <td key={`gas-${p.id}`} className={p.diffGas ? "diff-cell" : ""}>
-                                    <span className={p.diffGas ? "diff-highlight" : ""}>{p.gas}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Max System Efficiency</td>
-                            {parts.map(p => (
-                                <td key={`seer2-${p.id}`} className={p.diffSEER2 ? "diff-cell" : ""}>
-                                    <span className={p.diffSEER2 ? "diff-highlight" : ""}>{p.seer2} SEER2</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Voltage / Phase</td>
-                            {parts.map(p => (
-                                <td key={`vol-${p.id}`}>
-                                    <span>{p.voltage}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Rated Load Amps</td>
-                            {parts.map(p => (
-                                <td key={`amp-${p.id}`} className={p.diffAmperage ? "diff-cell" : ""}>
-                                    <span className={p.diffAmperage ? "diff-highlight" : ""}>{p.amperage}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Locked Rotor Amps</td>
-                            {parts.map(p => (
-                                <td key={`lra-${p.id}`} className={p.diffLRA ? "diff-cell" : ""}>
-                                    <span className={p.diffLRA ? "diff-highlight" : ""}>{p.lra}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Suction Connection</td>
-                            {parts.map(p => (
-                                <td key={`suc-${p.id}`}>
-                                    <span>{p.connectionSuction}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Liquid Connection</td>
-                            {parts.map(p => (
-                                <td key={`liq-${p.id}`}>
-                                    <span>{p.connectionLiquid}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Charged Oil Type</td>
-                            {parts.map(p => (
-                                <td key={`oil-${p.id}`}>
-                                    <span>{p.oilType}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Physical Dimensions</td>
-                            {parts.map(p => (
-                                <td key={`dim-${p.id}`}>
-                                    <span>{p.dimensions}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Dry Weight</td>
-                            {parts.map(p => (
-                                <td key={`wt-${p.id}`}>
-                                    <span>{p.weight}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Manufacturer Warranty</td>
-                            {parts.map(p => (
-                                <td key={`war-${p.id}`}>
-                                    <span>{p.warranty}</span>
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Unit Cost (List)</td>
-                            {parts.map(p => (
-                                <td key={`cost-${p.id}`} style={{ fontWeight: 'bold' }}>
-                                    {p.price}
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>Availability</td>
-                            {parts.map(p => (
-                                <td key={`stock-${p.id}`}>
-                                    {p.stock === 'Backordered' ?
-                                        <span className="badge badge-red">{p.stock}</span> :
-                                        <span className="badge badge-green">{p.stock}</span>}
-                                </td>
-                            ))}
-                        </tr>
-                        <tr>
-                            <td style={{ border: 'none' }}></td>
-                            {parts.map(p => (
-                                <td key={`act-${p.id}`} style={{ border: 'none', paddingTop: '16px' }}>
-                                    <button className="btn btn-primary" style={{ width: '100%' }}>Substitute Part</button>
-                                </td>
-                            ))}
-                        </tr>
+                        {rows.map((row, idx) => {
+                            if (row.isHeader) {
+                                return (
+                                    <tr key={idx} style={{ background: '#f1f5f9' }}>
+                                        <td colSpan={4} style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', borderBottom: '1px solid var(--color-border)', letterSpacing: '0.5px', textTransform: 'uppercase', fontSize: '12px' }}>
+                                            {row.group}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+
+                            const isDiff = hasDifference(row.key);
+                            // Highlight the row if it's different and the toggle is active.
+                            const highlightStyle = isDiff ? { backgroundColor: highlightDiff ? '#fef9c3' : 'transparent' } : {}; // Pale yellow
+
+                            return (
+                                <tr key={idx} style={{ ...highlightStyle, transition: 'background-color 0.2s', borderBottom: '1px solid var(--color-border)' }}>
+                                    <td style={{ fontWeight: 400, color: 'var(--text-secondary)', borderRight: '1px solid var(--color-border)', padding: '16px' }}>{row.label}</td>
+                                    {products.map((p, pIdx) => (
+                                        <td key={`${p.id}-${row.key}`} style={{ fontWeight: 700, color: 'var(--text-main)', borderRight: pIdx < products.length - 1 ? '1px solid var(--color-border)' : 'none', padding: '16px' }}>
+                                            {p.specs[row.key]}
+                                        </td>
+                                    ))}
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
