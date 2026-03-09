@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --bg-canvas: #f4f6f8;
+  --bg-surface: #ffffff;
+  --text-main: #1f2937;
+  --text-secondary: #6b7280;
+
+  /* Functional Colors per Brief */
+  --color-blue: #0ea5e9;
+  /* Primary Corporate Action */
+  --color-green: #10b981;
+  /* In-Stock/Next-Day */
+  --color-amber: #f59e0b;
+  /* Low Stock/Pending */
+  --color-red: #ef4444;
+  /* Out of Stock/Missing Specs */
+
+  --color-border: #d1d5db;
+  --color-accent: #0f172a;
+
+  --color-blue-light: #e0f2fe;
+  --color-green-light: #d1fae5;
+  --color-amber-light: #fef3c7;
+  --color-red-light: #fee2e2;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --radius-sm: 2px;
+  --radius-md: 4px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* Typography Requirements */
+strong,
+b,
+th {
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--color-blue);
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  border: none;
+  background: none;
+}
+
+/* Utilities */
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+.data-value {
+  font-weight: 700;
+}
+
+.data-label {
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--color-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0284c7;
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-green {
+  background-color: var(--color-green-light);
+  color: var(--color-green);
+}
+
+.badge-amber {
+  background-color: var(--color-amber-light);
+  color: var(--color-amber);
+}
+
+.badge-red {
+  background-color: var(--color-red-light);
+  color: var(--color-red);
+}
+
+/* Layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Desktop-first Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-surface);
+  font-size: 13px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table th {
+  background-color: #f9fafb;
+  font-weight: 700;
+  color: var(--text-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Cards */
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border);
+  background: #f9fafb;
+}
+
+.card-header h2 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="number"],
+select {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  border: 1px solid var(--color-border);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  width: 100%;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid var(--color-blue);
+  border-color: transparent;
+}
+
+/* Specific UI Requirements */
+.tech-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tech-spec-table tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tech-spec-table td {
+  padding: 12px;
+}
+
+.tech-spec-table td:first-child {
+  width: 40%;
+  color: var(--text-secondary);
+}
+
+.doc-vault-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 16px;
+  background: #f9fafb;
+}
+
+.doc-tab {
+  padding: 12px 24px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.doc-tab.active {
+  color: var(--color-blue);
+  border-bottom-color: var(--color-blue);
+  background: white;
+}
+
+/* Mobile minimum tap targets defined in specs */
+@media (max-width: 768px) {
+
+  .btn,
+  select,
+  input[type="text"] {
+    min-height: 48px;
+  }
+}
