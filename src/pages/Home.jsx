@@ -61,7 +61,7 @@ export default function Home() {
                             {/* Item 1 */}
                             <a href="#" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #e0e4e8', textDecoration: 'none', cursor: 'pointer' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#0f172a', fontFamily: 'monospace' }}>Ref: Hilt-AC-Q4</span>
+                                    <span style={{ fontSize: '15px', fontWeight: '500', color: '#475569', fontFamily: 'monospace' }}>Ref: Hilt-AC-Q4</span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                     <span style={{ fontSize: '11px', padding: '4px 10px', background: '#d1fae5', color: '#059669', borderRadius: '4px', fontWeight: '900', letterSpacing: '0.5px' }}>READY</span>
@@ -72,7 +72,7 @@ export default function Home() {
                             {/* Item 2 */}
                             <a href="#" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #e0e4e8', textDecoration: 'none', cursor: 'pointer' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#0f172a', fontFamily: 'monospace' }}>Ref: MIDC-Unit-Trns</span>
+                                    <span style={{ fontSize: '15px', fontWeight: '500', color: '#475569', fontFamily: 'monospace' }}>Ref: MIDC-Unit-Trns</span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                     <span style={{ fontSize: '11px', padding: '4px 10px', background: '#dbeafe', color: '#1d4ed8', borderRadius: '4px', fontWeight: '900', letterSpacing: '0.5px' }}>IN TRANSIT</span>
@@ -83,7 +83,7 @@ export default function Home() {
                             {/* Item 3 */}
                             <a href="#" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid transparent', textDecoration: 'none', cursor: 'pointer' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#0f172a', fontFamily: 'monospace' }}>Ref: K-Line-Draft</span>
+                                    <span style={{ fontSize: '15px', fontWeight: '500', color: '#475569', fontFamily: 'monospace' }}>Ref: K-Line-Draft</span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                     <span style={{ fontSize: '11px', padding: '4px 10px', background: '#e2e8f0', color: '#334155', borderRadius: '4px', fontWeight: '900', letterSpacing: '0.5px' }}>DRAFT</span>
@@ -98,7 +98,7 @@ export default function Home() {
                 <div style={{ background: '#f1f5f9', padding: '16px 24px', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#0f172a', marginTop: '12px', border: '1px solid #e0e4e8', boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <Headset size={22} color="var(--text-main)" />
-                        <span style={{ fontSize: '15px', fontWeight: '700' }}>Need a Custom Configuration? Talk to an Owsem Engineer: <span style={{ fontFamily: 'monospace' }}>+91-XXXX-XXXXXX</span></span>
+                        <span style={{ fontSize: '15px', fontWeight: '700' }}>Need a Custom Configuration? Talk to an Osem Engineer: <span style={{ fontFamily: 'monospace' }}>+91-XXXX-XXXXXX</span></span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#25D366', color: 'white', padding: '8px 16px', borderRadius: '24px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
