@@ -9,7 +9,7 @@ export default function Checkout() {
         <div className="container" style={{ padding: '32px 24px' }}>
             {/* Breadcrumbs */}
             <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
-                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Workspace</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Quotation Request</span>
+                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Cart</span>
             </div>
             <h1 style={{ marginBottom: '8px' }}>B2B Enquiry Summary</h1>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>Review parts and specify logistics to submit an official request for quotation.</p>

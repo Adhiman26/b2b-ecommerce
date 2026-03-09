@@ -37,6 +37,11 @@ export default function QuoteWorkspace() {
 
     return (
         <div className="container" style={{ padding: '32px 24px' }}>
+            {/* Breadcrumbs */}
+            <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
+                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Quote Gen</span>
+            </div>
+
             {/* Contextual Header */}
             <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

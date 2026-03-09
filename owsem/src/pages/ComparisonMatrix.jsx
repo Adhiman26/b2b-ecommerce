@@ -64,6 +64,11 @@ export default function ComparisonMatrix() {
 
     return (
         <div className="container" style={{ padding: '32px 24px' }}>
+            {/* Breadcrumbs */}
+            <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
+                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Compare</span>
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
                 <div>
                     <h1 style={{ marginBottom: '8px' }}>Technical Comparison Matrix</h1>

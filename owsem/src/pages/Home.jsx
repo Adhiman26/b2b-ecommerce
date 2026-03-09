@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../store';
-import { Search, Wrench, Snowflake, Cpu, Settings, Activity, Thermometer, ShoppingCart, Camera, Plus, Upload, RefreshCcw, Headset, Folder, ArrowRight, FileText } from 'lucide-react';
+import { Search, Wrench, Snowflake, Cpu, Settings, Activity, Thermometer, ShoppingCart, Camera, Plus, Upload, RefreshCcw, Headset, Folder, ArrowRight, FileText, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <div className="container" style={{ padding: '32px 24px' }}>
             {/* Hero Layer: Personalized Project Dashboard */}
-            <div style={{ background: '#f4f7f9', padding: '32px', borderRadius: '8px', marginBottom: '32px', display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid #e0e4e8' }}>
+            <div style={{ background: '#e2e8f0', padding: '32px', borderRadius: '8px', marginBottom: '32px', display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid #cbd5e1' }}>
 
                 {/* Top Section: Power Actions & Live Activity Feed */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'minmax(400px, 1fr) 450px', gap: '24px', alignItems: 'stretch' }}>
@@ -22,82 +22,104 @@ export default function Home() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                             {/* Card 1 */}
-                            <button className="btn btn-primary" style={{ height: 'auto', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px', textAlign: 'left', borderRadius: '4px' }}>
-                                <div style={{ marginTop: '2px' }}>
-                                    <Upload size={20} />
+                            <button className="btn btn-primary" style={{ height: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', textAlign: 'center', borderRadius: '6px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}>
+                                <div>
+                                    <Upload size={36} />
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <span style={{ fontSize: '14px', fontWeight: 'bold', color: 'white', marginBottom: '4px' }}>Upload Bulk BOM</span>
-                                    <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.8)' }}>Excel, CSV, or PDF.</span>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'white', marginBottom: '6px' }}>Bulk Requisition</span>
+                                    <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.95)', lineHeight: 1.4 }}>Upload your Excel/PDF list for a consolidated quote.</span>
                                 </div>
                             </button>
                             {/* Card 2 */}
-                            <button className="btn" style={{ height: 'auto', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px', textAlign: 'left', background: 'white', border: '1px solid #e0e4e8', borderRadius: '4px' }}>
-                                <div style={{ color: 'var(--color-blue)', marginTop: '2px' }}>
-                                    <Search size={20} />
+                            <div className="card" style={{ padding: '20px 16px', background: 'white', border: '1px solid #cbd5e1', borderRadius: '6px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <label style={{ fontSize: '15px', fontWeight: 'bold', color: '#334155', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <RefreshCcw size={18} color="#475569" />
+                                    Express Requisition
+                                </label>
+                                <span style={{ fontSize: '13px', color: '#64748b', fontWeight: '500' }}>Reorder Standard Kits</span>
+                                <div style={{ display: 'flex', marginTop: '4px' }}>
+                                    <select style={{ flex: 1, padding: '10px 12px', borderRadius: '4px 0 0 4px', border: '1px solid #cbd5e1', borderRight: 'none', fontSize: '13px', outline: 'none', background: '#f8fafc', color: '#334155', appearance: 'none' }}>
+                                        <option value="">Select Saved Kit...</option>
+                                        <option value="1">Monthly Filter Kit - Hotel Hilton</option>
+                                        <option value="2">Compressor Service Pack - Unit A</option>
+                                    </select>
+                                    <button className="btn btn-primary" style={{ padding: '0 16px', borderRadius: '0 4px 4px 0', border: 'none', fontWeight: 'bold', fontSize: '13px', cursor: 'pointer', whiteSpace: 'nowrap', background: '#475569', color: 'white' }}>Add to Enquiry</button>
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <span style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--text-main)', marginBottom: '4px' }}>Part Cross-Reference</span>
-                                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Cross-reference OEM parts.</span>
-                                </div>
-                            </button>
+                            </div>
                         </div>
                     </div>
 
                     {/* Right: Project Updates Widget */}
-                    <div className="card" style={{ background: 'white', display: 'flex', flexDirection: 'column', padding: '20px', border: '1px solid #e0e4e8', borderRadius: '4px', boxShadow: 'none' }}>
+                    <div className="card" style={{ background: 'white', display: 'flex', flexDirection: 'column', padding: '24px', border: '1px solid #e0e4e8', borderRadius: '6px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', borderBottom: '1px solid #e0e4e8', paddingBottom: '12px' }}>
                             <Activity size={18} color="var(--color-blue)" />
                             <h2 style={{ fontSize: '16px', margin: 0, color: '#0f172a' }}>Project Updates</h2>
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, borderTop: '1px solid #e0e4e8', marginTop: '4px' }}>
                             {/* Item 1 */}
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 12px', background: '#fafafa', borderRadius: '4px', border: '1px solid #e0e4e8' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--text-main)' }}>Quote #4402</span>
-                                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Ready for Review (2h ago)</span>
+                            <a href="#" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #e0e4e8', textDecoration: 'none', cursor: 'pointer' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#0f172a', fontFamily: 'monospace' }}>Ref: Hilt-AC-Q4</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <span style={{ fontSize: '10px', padding: '2px 6px', background: '#dcfce7', color: '#166534', borderRadius: '12px', fontWeight: 'bold' }}>Ready</span>
-                                    <Link to="/" style={{ fontSize: '12px', color: 'var(--color-blue)', fontWeight: 'bold', textDecoration: 'none' }}>[View PDF]</Link>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                    <span style={{ fontSize: '11px', padding: '4px 10px', background: '#d1fae5', color: '#059669', borderRadius: '4px', fontWeight: '900', letterSpacing: '0.5px' }}>READY</span>
+                                    <ChevronRight size={18} color="#94a3b8" />
                                 </div>
-                            </div>
+                            </a>
 
                             {/* Item 2 */}
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 12px', background: '#fafafa', borderRadius: '4px', border: '1px solid #e0e4e8' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--text-main)' }}>Shipment #881</span>
-                                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Out for Delivery (Rabale Site)</span>
+                            <a href="#" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #e0e4e8', textDecoration: 'none', cursor: 'pointer' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#0f172a', fontFamily: 'monospace' }}>Ref: MIDC-Unit-Trns</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <span style={{ fontSize: '10px', padding: '2px 6px', background: '#dbeafe', color: '#1e40af', borderRadius: '12px', fontWeight: 'bold' }}>In Transit</span>
-                                    <Link to="/" style={{ fontSize: '12px', color: 'var(--color-blue)', fontWeight: 'bold', textDecoration: 'none' }}>[Track]</Link>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                    <span style={{ fontSize: '11px', padding: '4px 10px', background: '#dbeafe', color: '#1d4ed8', borderRadius: '4px', fontWeight: '900', letterSpacing: '0.5px' }}>IN TRANSIT</span>
+                                    <ChevronRight size={18} color="#94a3b8" />
                                 </div>
-                            </div>
+                            </a>
 
                             {/* Item 3 */}
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 12px', background: '#fafafa', borderRadius: '4px', border: '1px solid #e0e4e8' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                    <span style={{ fontSize: '13px', fontWeight: 'bold', color: 'var(--text-main)' }}>Draft Enquiry</span>
-                                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Saved (10 March)</span>
+                            <a href="#" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid transparent', textDecoration: 'none', cursor: 'pointer' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#0f172a', fontFamily: 'monospace' }}>Ref: K-Line-Draft</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <span style={{ fontSize: '10px', padding: '2px 6px', background: '#fef3c7', color: '#92400e', borderRadius: '12px', fontWeight: 'bold' }}>Saved</span>
-                                    <Link to="/checkout" style={{ fontSize: '12px', color: 'var(--color-blue)', fontWeight: 'bold', textDecoration: 'none' }}>[Resume]</Link>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                    <span style={{ fontSize: '11px', padding: '4px 10px', background: '#e2e8f0', color: '#334155', borderRadius: '4px', fontWeight: '900', letterSpacing: '0.5px' }}>DRAFT</span>
+                                    <ChevronRight size={18} color="#94a3b8" />
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 {/* Bottom Section: Engineer on Call Bar */}
-                <div style={{ background: '#0f172a', padding: '12px 20px', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white', marginTop: '4px' }}>
+                <div style={{ background: '#f1f5f9', padding: '16px 24px', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#0f172a', marginTop: '12px', border: '1px solid #e0e4e8', boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <Headset size={18} color="var(--color-blue)" />
-                        <span style={{ fontSize: '13px', fontWeight: '500' }}>Need technical validation for a quote? Talk to an Owsem Engineer:</span>
+                        <Headset size={22} color="var(--text-main)" />
+                        <span style={{ fontSize: '15px', fontWeight: '700' }}>Need a Custom Configuration? Talk to an Owsem Engineer: <span style={{ fontFamily: 'monospace' }}>+91-XXXX-XXXXXX</span></span>
                     </div>
-                    <span style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--color-blue)', fontFamily: 'monospace' }}>+91-XXXX-XXXXXX</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#25D366', color: 'white', padding: '8px 16px', borderRadius: '24px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+                            </svg>
+                            WhatsApp Connect
+                        </a>
+                        <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--color-blue)', fontFamily: 'monospace' }}>+91-XXXX-XXXXXX</span>
+                    </div>
+                </div>
+
+                {/* Help & Documentation Quick Links */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '8px', fontSize: '13px', color: '#64748b' }}>
+                    <a href="#" style={{ color: 'inherit', textDecoration: 'none', fontWeight: '500' }}>Help & Documentation</a>
+                    <span>•</span>
+                    <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Integration Guides</a>
+                    <span>•</span>
+                    <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Warranty Claims</a>
+                    <span>•</span>
+                    <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>API Keys</a>
                 </div>
             </div>
 
