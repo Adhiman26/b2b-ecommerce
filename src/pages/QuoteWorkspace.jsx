@@ -36,18 +36,18 @@ export default function QuoteWorkspace() {
     const grandTotal = subtotal + gstTax;
 
     return (
-        <div className="container" style={{ padding: '32px 24px' }}>
+        <div className="container" style={{ padding: '24px' }}>
             {/* Breadcrumbs */}
-            <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
+            <div className="desktop-only" style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '13px' }}>
                 <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Quote Gen</span>
             </div>
 
             {/* Contextual Header */}
-            <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
+            <div className="quote-header" style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+                    <div style={{ flex: 1, minWidth: '280px' }}>
                         <h1 style={{ fontSize: '24px', margin: '0 0 8px 0' }}>Requisition #REQ-2099 - Pending Quote</h1>
-                        <div style={{ display: 'flex', gap: '24px', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                        <div style={{ display: 'flex', gap: '24px', color: 'var(--text-secondary)', fontSize: '14px', flexWrap: 'wrap' }}>
                             <span><strong>Project Site:</strong> Tech Park Phase 1</span>
                             <span><strong>Technician:</strong> Sameer M.</span>
                         </div>
@@ -57,10 +57,10 @@ export default function QuoteWorkspace() {
             </div>
 
             {/* Split Screen Layout */}
-            <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+            <div className="quote-workspace-layout" style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
 
                 {/* Left Column: Line Items (70%) */}
-                <div style={{ flex: '7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="quote-main-content" style={{ flex: '7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div className="card" style={{ overflowX: 'auto' }}>
                         <table className="data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                             <thead style={{ background: '#f1f5f9', borderBottom: '2px solid var(--color-border)' }}>
@@ -79,20 +79,20 @@ export default function QuoteWorkspace() {
 
                                     return (
                                         <tr key={idx} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                                            <td style={{ padding: '16px' }}>
+                                            <td data-label="Item" style={{ padding: '16px' }}>
                                                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                                                    <div style={{ width: '40px', height: '40px', border: '1px solid var(--color-border)', borderRadius: '4px', background: 'white', padding: '2px' }}>
+                                                    <div style={{ width: '40px', height: '40px', border: '1px solid var(--color-border)', borderRadius: '4px', background: 'white', padding: '2px', flexShrink: 0 }}>
                                                         <img src="https://placehold.co/40x40/ffffff/1e293b?text=CAD" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Thumb" />
                                                     </div>
-                                                    <div>
+                                                    <div style={{ overflow: 'hidden' }}>
                                                         <div style={{ fontWeight: 800, fontSize: '13px', color: '#0f172a' }}>{item.sku}</div>
-                                                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '200px' }}>{item.name}</div>
+                                                        <div className="text-truncate" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{item.name}</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td style={{ padding: '16px', textAlign: 'center', fontWeight: 'bold' }}>{item.qty}</td>
-                                            <td style={{ padding: '16px', textAlign: 'right', color: 'var(--text-secondary)' }}>₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                            <td style={{ padding: '16px', textAlign: 'center' }}>
+                                            <td data-label="Qty" style={{ padding: '16px', textAlign: 'center', fontWeight: 'bold' }}>{item.qty}</td>
+                                            <td data-label="Base Cost" style={{ padding: '16px', textAlign: 'right', color: 'var(--text-secondary)' }}>₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                            <td data-label="Markup %" style={{ padding: '16px', textAlign: 'center' }}>
                                                 <div style={{ display: 'inline-flex', alignItems: 'center', border: '1px solid var(--color-border)', borderRadius: '4px', overflow: 'hidden' }}>
                                                     <input
                                                         type="number"
@@ -105,7 +105,7 @@ export default function QuoteWorkspace() {
                                                     <span style={{ padding: '6px 8px', background: '#f8fafc', borderLeft: '1px solid var(--color-border)', color: 'var(--text-secondary)' }}>%</span>
                                                 </div>
                                             </td>
-                                            <td style={{ padding: '16px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>
+                                            <td data-label="Final Quoted" style={{ padding: '16px', textAlign: 'right', fontWeight: 'bold', fontSize: '15px' }}>
                                                 ₹{finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                             </td>
                                         </tr>
@@ -121,7 +121,7 @@ export default function QuoteWorkspace() {
                 </div>
 
                 {/* Right Column: Financial Summary (30%) */}
-                <div style={{ flex: '3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div className="quote-summary-sidebar" style={{ flex: '3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     <div className="card card-body" style={{ background: '#f8fafc' }}>
                         <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontWeight: 600, fontSize: '14px' }}>
                             <span>Apply Global Margin (15%)</span>
@@ -135,7 +135,7 @@ export default function QuoteWorkspace() {
                     <div className="card card-body">
                         <h3 style={{ fontSize: '16px', margin: '0 0 16px 0', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>Financial Summary</h3>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px' }}>
+                        <div className="summary-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <span style={{ color: 'var(--text-secondary)' }}>Total Base Cost:</span>
                                 <span>₹{totalBaseCost.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -148,9 +148,9 @@ export default function QuoteWorkspace() {
                                 <span style={{ color: 'var(--text-secondary)' }}>GST (18%):</span>
                                 <span>₹{gstTax.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--color-border)', fontSize: '18px', fontWeight: 'bold', color: '#0f172a' }}>
-                                <span>Grand Total:</span>
-                                <span>₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                            <div className="grand-total-row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--color-border)', fontSize: '18px', fontWeight: 'bold', color: '#0f172a' }}>
+                                <span className="label">Grand Total:</span>
+                                <span className="value">₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                             </div>
                         </div>
                     </div>

@@ -36,13 +36,13 @@ export default function Home() {
                                     Express Requisition
                                 </label>
                                 <span style={{ fontSize: '13px', color: '#64748b', fontWeight: '500' }}>Reorder Standard Kits</span>
-                                <div className="mobile-only-block" style={{ display: 'flex', marginTop: '4px' }}>
-                                    <select style={{ flex: 1, padding: '10px 12px', borderRadius: '4px 0 0 4px', border: '1px solid #cbd5e1', borderRight: 'none', fontSize: '13px', outline: 'none', background: '#f8fafc', color: '#334155', appearance: 'none' }}>
+                                <div style={{ display: 'flex', marginTop: '12px', alignItems: 'stretch' }}>
+                                    <select style={{ flex: 1, padding: '10px 16px', borderRadius: '4px 0 0 4px', border: '1px solid #cbd5e1', borderRight: 'none', fontSize: '14px', outline: 'none', background: '#f8fafc', color: '#334155', minHeight: '48px' }}>
                                         <option value="">Select Saved Kit...</option>
                                         <option value="1">Monthly Filter Kit - Hotel Hilton</option>
                                         <option value="2">Compressor Service Pack - Unit A</option>
                                     </select>
-                                    <button className="btn btn-primary" style={{ padding: '0 16px', borderRadius: '0 4px 4px 0', border: 'none', fontWeight: 'bold', fontSize: '13px', cursor: 'pointer', whiteSpace: 'nowrap', background: '#475569', color: 'white', minHeight: '48px', marginTop: '8px', width: '100%' }}>Add to Enquiry</button>
+                                    <button className="btn btn-primary" style={{ padding: '0 24px', borderRadius: '0 4px 4px 0', border: 'none', fontWeight: 'bold', fontSize: '14px', cursor: 'pointer', whiteSpace: 'nowrap', background: '#475569', color: 'white', minHeight: '48px' }}>Add to Enquiry</button>
                                 </div>
                             </div>
                         </div>

@@ -472,4 +472,47 @@ select:focus {
   .grid-3 {
     grid-template-columns: 1fr !important;
   }
+
+  /* Quote Workspace Mobile Fixes */
+  .quote-workspace-layout {
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  .quote-main-content,
+  .quote-summary-sidebar {
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  .quote-header h1 {
+    font-size: 20px !important;
+  }
+
+  .grand-total-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px;
+  }
+
+  .grand-total-row .value {
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .text-truncate {
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
