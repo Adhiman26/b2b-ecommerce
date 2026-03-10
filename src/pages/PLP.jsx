@@ -9,6 +9,7 @@ export default function PLP() {
     const [quantities, setQuantities] = useState({});
     const [compareList, setCompareList] = useState([]);
     const [viewMode, setViewMode] = useState('grid');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const [filters, setFilters] = useState({
         tonnage: [],
@@ -53,6 +54,12 @@ export default function PLP() {
     return (
         <div className="container" style={{ padding: '32px 24px' }}>
             <h1 style={{ marginBottom: '8px' }}>Compressors</h1>
+            <div className="mobile-only" style={{ marginBottom: '16px' }}>
+                <button className="btn btn-secondary" style={{ width: '100%' }} onClick={() => setIsFilterOpen(true)}>
+                    <Filter size={16} /> Filters
+                </button>
+            </div>
+
             <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '13px' }}>
                 <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <Link to="/plp" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Commercial Equipment</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Compressors</span>
             </div>
@@ -60,7 +67,7 @@ export default function PLP() {
             <div className="grid-2" style={{ gridTemplateColumns: '280px 1fr', gap: '32px', alignItems: 'start' }}>
 
                 {/* Left Sidebar: Technical Faceted Navigation */}
-                <div className="card">
+                <div className="card desktop-only">
                     <div className="card-header" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                         <Filter size={16} /> <h2 style={{ fontSize: '16px' }}>Technical Filters</h2>
                     </div>
@@ -153,7 +160,7 @@ export default function PLP() {
                         </div>
                     )}
 
-                    {viewMode === 'list' && filteredProducts.map((p, idx) => {
+                    {viewMode === 'list' && filteredProducts.map((p) => {
                         const isSelected = compareList.includes(p.id);
                         return (
                             <div key={p.id} className="card card-body" style={{ display: 'flex', alignItems: 'center', gap: '24px', padding: '16px', backgroundColor: isSelected ? '#f0f9ff' : 'white', borderColor: isSelected ? '#bae6fd' : 'var(--color-border)', transition: 'all 0.2s ease', cursor: 'pointer' }} onClick={() => navigate(`/product/${p.id}`)}>
@@ -176,7 +183,7 @@ export default function PLP() {
                                 {/* Column 2: Data Flow (Part #, Copy, Title, Specs) */}
                                 <div style={{ minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                                        <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0, fontFamily: 'monospace' }}>
                                             <span style={{ color: 'inherit', textDecoration: 'none' }}>{p.sku}</span>
                                         </h2>
                                         <button style={{ color: 'var(--text-secondary)', padding: '2px', background: 'none', border: 'none', cursor: 'pointer' }} title="Copy Part Number" onClick={(e) => e.stopPropagation()}>
@@ -248,7 +255,7 @@ export default function PLP() {
                                             <img src={p.image} alt={p.name} style={{ width: '100%', height: '180px', objectFit: 'contain' }} />
                                         </div>
                                         <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                            <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>
+                                            <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', marginBottom: '4px', fontFamily: 'monospace' }}>
                                                 <span style={{ color: 'inherit', textDecoration: 'none' }}>{p.sku}</span>
                                             </div>
                                             <div style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 400, marginBottom: '12px', minHeight: '38px', lineHeight: '1.4' }}>{p.name}</div>
@@ -317,6 +324,49 @@ export default function PLP() {
                     </div>
                 )
             }
+
+            {/* Mobile Filter Bottom Sheet overlay */}
+            {isFilterOpen && <div className="bottom-sheet-overlay" onClick={() => setIsFilterOpen(false)}></div>}
+
+            {/* Mobile Filter Bottom Sheet */}
+            <div className={`bottom-sheet ${isFilterOpen ? 'open' : ''}`} style={{ transform: isFilterOpen ? 'translateY(0)' : 'translateY(100%)' }}>
+                <div className="bottom-sheet-handle"></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                    <h2 style={{ fontSize: '18px', margin: 0 }}>Technical Filters</h2>
+                    <button style={{ background: 'none', border: 'none', fontSize: '14px', color: 'var(--color-blue)', fontWeight: 'bold' }} onClick={() => setIsFilterOpen(false)}>Done</button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div>
+                        <strong style={{ display: 'block', marginBottom: '8px' }}>Tonnage</strong>
+                        {['3 Ton', '5 Ton', '7.5 Ton', '10 Ton'].map(t => (
+                            <label key={t} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}>
+                                <input type="checkbox" checked={filters.tonnage.includes(t)} onChange={() => handleFilterChange('tonnage', t)} style={{ width: '24px', height: '24px' }} />
+                                <span style={{ fontSize: '16px', fontWeight: 600 }}>{t}</span>
+                            </label>
+                        ))}
+                    </div>
+                    <div>
+                        <strong style={{ display: 'block', marginBottom: '8px' }}>Voltage</strong>
+                        {['208/230V', '460V', '575V'].map(v => (
+                            <label key={v} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}>
+                                <input type="checkbox" checked={filters.voltage.includes(v)} onChange={() => handleFilterChange('voltage', v)} style={{ width: '24px', height: '24px' }} />
+                                <span style={{ fontSize: '16px', fontWeight: 600 }}>{v}</span>
+                            </label>
+                        ))}
+                    </div>
+                    <div style={{ paddingBottom: '72px' }}>
+                        <strong style={{ display: 'block', marginBottom: '8px' }}>Brand (Secondary)</strong>
+                        {['Copeland', 'Bristol', 'LG', 'Danfoss', 'Trane'].map(b => (
+                            <label key={b} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}>
+                                <input type="checkbox" checked={filters.brand.includes(b)} onChange={() => handleFilterChange('brand', b)} style={{ width: '24px', height: '24px' }} />
+                                <span style={{ fontSize: '16px', fontWeight: 600 }}>{b}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
         </div >
     );
 }

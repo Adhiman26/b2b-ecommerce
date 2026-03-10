@@ -8,7 +8,6 @@ export default function PDP() {
     const [qty, setQty] = useState(1);
     const [serial, setSerial] = useState('');
     const [fitMatch, setFitMatch] = useState(null);
-    const [activeTab, setActiveTab] = useState('specs');
 
     // UI Interaction States
     const [isDocDrawerOpen, setIsDocDrawerOpen] = useState(false);

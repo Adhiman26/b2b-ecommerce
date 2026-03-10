@@ -139,18 +139,21 @@ button {
 }
 
 .badge-green {
-  background-color: var(--color-green-light);
-  color: var(--color-green);
+  background-color: #059669;
+  color: white;
+  letter-spacing: 0.5px;
 }
 
 .badge-amber {
-  background-color: var(--color-amber-light);
-  color: var(--color-amber);
+  background-color: #d97706;
+  color: white;
+  letter-spacing: 0.5px;
 }
 
 .badge-red {
-  background-color: var(--color-red-light);
-  color: var(--color-red);
+  background-color: #dc2626;
+  color: white;
+  letter-spacing: 0.5px;
 }
 
 /* Layouts */
@@ -271,12 +274,202 @@ select:focus {
   background: white;
 }
 
-/* Mobile minimum tap targets defined in specs */
-@media (max-width: 768px) {
+.mono {
+  font-family: monospace;
+  letter-spacing: -0.5px;
+}
 
+.mobile-only {
+  display: none !important;
+}
+
+.bottom-tab-bar {
+  display: none;
+}
+
+.bottom-sheet-overlay {
+  display: none;
+}
+
+/* Mobile architecture */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+
+  div.mobile-only-block {
+    display: block !important;
+  }
+
+  /* Universal Mobile Container Padding */
+  .container {
+    padding: 8px !important;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Structural paddings for shell */
+  main {
+    padding-bottom: 80px;
+    padding-top: 56px;
+    /* Space for minimal header */
+  }
+
+  /* Shell Components */
+  .bottom-tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    background: #ffffff;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom, 12px);
+  }
+
+  .bottom-tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    flex: 1;
+    height: 100%;
+  }
+
+  .bottom-tab-item.active {
+    color: var(--color-blue);
+  }
+
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 1000;
+  }
+
+  /* Component Redesign */
   .btn,
   select,
-  input[type="text"] {
+  input[type="text"],
+  input[type="number"] {
     min-height: 48px;
+    font-size: 16px;
+    /* mobile accessible */
+  }
+
+  /* Table to vertical key-value list */
+  .data-table thead {
+    display: none;
+  }
+
+  .data-table,
+  .data-table tbody,
+  .data-table tr,
+  .data-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .data-table tr {
+    margin-bottom: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: white;
+    padding: 0;
+  }
+
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .data-table td:last-child {
+    border-bottom: none;
+  }
+
+  .data-table td::before {
+    content: attr(data-label);
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* Bottom sheet */
+  .bottom-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    display: block;
+  }
+
+  .bottom-sheet {
+    position: fixed;
+    z-index: 2001;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 16px 16px 0 0;
+    padding: 24px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease-out;
+  }
+
+  .bottom-sheet-handle {
+    width: 48px;
+    height: 4px;
+    background: #cbd5e1;
+    border-radius: 2px;
+    margin: 0 auto 24px;
+  }
+
+
+
+  /* Hero Specific Overrides */
+  .hero-container {
+    padding: 16px !important;
+  }
+
+  .hero-block {
+    padding: 16px !important;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr !important;
   }
 }

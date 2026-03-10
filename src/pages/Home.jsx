@@ -1,26 +1,24 @@
-import { useState } from 'react';
+
 import { useStore } from '../store';
 import { Search, Wrench, Snowflake, Cpu, Settings, Activity, Thermometer, ShoppingCart, Camera, Plus, Upload, RefreshCcw, Headset, Folder, ArrowRight, FileText, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
     const { addToCart } = useStore();
-    const [q1, setQ1] = useState(1);
-    const [q2, setQ2] = useState(1);
     return (
-        <div className="container" style={{ padding: '32px 24px' }}>
+        <div className="container hero-container" style={{ padding: '32px 24px' }}>
             {/* Hero Layer: Personalized Project Dashboard */}
-            <div style={{ background: '#e2e8f0', padding: '32px', borderRadius: '8px', marginBottom: '32px', display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid #cbd5e1' }}>
+            <div className="hero-block" style={{ background: '#e2e8f0', padding: '32px', borderRadius: '8px', marginBottom: '32px', display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid #cbd5e1' }}>
 
                 {/* Top Section: Power Actions & Live Activity Feed */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(400px, 1fr) 450px', gap: '24px', alignItems: 'stretch' }}>
+                <div className="grid-2" style={{ gridTemplateColumns: 'minmax(400px, 1fr) 450px', gap: '24px', alignItems: 'stretch' }}>
 
                     {/* Left: Command Center */}
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         <h1 style={{ fontSize: '32px', marginBottom: '8px', lineHeight: 1.2, color: '#0f172a' }}>Your Procurement Command Center</h1>
                         <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '24px', maxWidth: '90%' }}>Manage site-specific quotes, verify fitment, and access technical support in one place.</p>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div className="grid-2" style={{ gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                             {/* Card 1 */}
                             <button className="btn btn-primary" style={{ height: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', textAlign: 'center', borderRadius: '6px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' }}>
                                 <div>
@@ -38,13 +36,13 @@ export default function Home() {
                                     Express Requisition
                                 </label>
                                 <span style={{ fontSize: '13px', color: '#64748b', fontWeight: '500' }}>Reorder Standard Kits</span>
-                                <div style={{ display: 'flex', marginTop: '4px' }}>
+                                <div className="mobile-only-block" style={{ display: 'flex', marginTop: '4px' }}>
                                     <select style={{ flex: 1, padding: '10px 12px', borderRadius: '4px 0 0 4px', border: '1px solid #cbd5e1', borderRight: 'none', fontSize: '13px', outline: 'none', background: '#f8fafc', color: '#334155', appearance: 'none' }}>
                                         <option value="">Select Saved Kit...</option>
                                         <option value="1">Monthly Filter Kit - Hotel Hilton</option>
                                         <option value="2">Compressor Service Pack - Unit A</option>
                                     </select>
-                                    <button className="btn btn-primary" style={{ padding: '0 16px', borderRadius: '0 4px 4px 0', border: 'none', fontWeight: 'bold', fontSize: '13px', cursor: 'pointer', whiteSpace: 'nowrap', background: '#475569', color: 'white' }}>Add to Enquiry</button>
+                                    <button className="btn btn-primary" style={{ padding: '0 16px', borderRadius: '0 4px 4px 0', border: 'none', fontWeight: 'bold', fontSize: '13px', cursor: 'pointer', whiteSpace: 'nowrap', background: '#475569', color: 'white', minHeight: '48px', marginTop: '8px', width: '100%' }}>Add to Enquiry</button>
                                 </div>
                             </div>
                         </div>
@@ -95,8 +93,8 @@ export default function Home() {
                 </div>
 
                 {/* Bottom Section: Engineer on Call Bar */}
-                <div style={{ background: '#f1f5f9', padding: '16px 24px', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#0f172a', marginTop: '12px', border: '1px solid #e0e4e8', boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="mobile-only-block" style={{ background: '#f1f5f9', padding: '16px 24px', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#0f172a', marginTop: '12px', border: '1px solid #e0e4e8', boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
                         <Headset size={22} color="var(--text-main)" />
                         <span style={{ fontSize: '15px', fontWeight: '700' }}>Need a Custom Configuration? Talk to an Osem Engineer: <span style={{ fontFamily: 'monospace' }}>+91-XXXX-XXXXXX</span></span>
                     </div>
@@ -171,7 +169,7 @@ export default function Home() {
                 <Link to="/plp" style={{ fontSize: '14px', color: 'var(--color-blue)', fontWeight: 'bold', textDecoration: 'none' }}>View All Suggested Parts &rarr;</Link>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
+            <div className="grid-3" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
 
                 {/* Card 1 */}
                 <div style={{ background: 'white', border: '1px solid var(--color-border)', borderRadius: '4px', overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
