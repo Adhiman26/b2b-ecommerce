@@ -123,10 +123,10 @@ export default function QuoteWorkspace() {
                 {/* Right Column: Financial Summary (30%) */}
                 <div className="quote-summary-sidebar" style={{ flex: '3', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     <div className="card card-body" style={{ background: '#f8fafc' }}>
-                        <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontWeight: 600, fontSize: '14px' }}>
+                        <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', fontWeight: 600, fontSize: '14px', userSelect: 'none', gap: '12px' }}>
                             <span>Apply Global Margin (15%)</span>
-                            <div style={{ width: '40px', height: '24px', background: globalMarkup ? 'var(--color-blue)' : '#cbd5e1', borderRadius: '12px', position: 'relative', transition: '0.3s' }}>
-                                <div style={{ width: '20px', height: '20px', background: 'white', borderRadius: '3px', position: 'absolute', top: '2px', left: globalMarkup ? '18px' : '2px', transition: '0.3s' }}></div>
+                            <div style={{ width: '40px', height: '24px', background: globalMarkup ? 'var(--color-blue)' : '#cbd5e1', borderRadius: '12px', position: 'relative', transition: '0.3s', flexShrink: 0 }}>
+                                <div style={{ width: '20px', height: '20px', background: 'white', borderRadius: '50%', position: 'absolute', top: '2px', left: globalMarkup ? '18px' : '2px', transition: '0.3s', boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}></div>
                             </div>
                             <input type="checkbox" checked={globalMarkup} onChange={() => setGlobalMarkup(!globalMarkup)} style={{ display: 'none' }} />
                         </label>

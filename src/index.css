@@ -291,6 +291,10 @@ select:focus {
   display: none;
 }
 
+.bottom-sheet {
+  display: none;
+}
+
 /* Mobile architecture */
 @media (max-width: 768px) {
   .desktop-only {
@@ -436,6 +440,7 @@ select:focus {
   }
 
   .bottom-sheet {
+    display: block;
     position: fixed;
     z-index: 2001;
     bottom: 0;

@@ -69,17 +69,17 @@ export default function ComparisonMatrix() {
                 <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Compare</span>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', gap: '16px', flexWrap: 'wrap' }}>
                 <div>
                     <h1 style={{ marginBottom: '8px' }}>Technical Comparison Matrix</h1>
                     <p style={{ color: 'var(--text-secondary)', margin: 0 }}>Auditing {products.length} selected compressor units.</p>
                 </div>
 
                 {/* Control Bar: Toggle Switch */}
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 600 }}>
-                    Highlight Differences Only
+                <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', fontWeight: 600, userSelect: 'none' }}>
+                    <span style={{ fontSize: '14px' }}>Highlight Differences Only</span>
                     <div style={{ width: '40px', height: '24px', background: highlightDiff ? 'var(--color-blue)' : '#cbd5e1', borderRadius: '12px', position: 'relative', transition: '0.3s' }}>
-                        <div style={{ width: '20px', height: '20px', background: 'white', borderRadius: '3px', position: 'absolute', top: '2px', left: highlightDiff ? '18px' : '2px', transition: '0.3s' }}></div>
+                        <div style={{ width: '20px', height: '20px', background: 'white', borderRadius: '50%', position: 'absolute', top: '2px', left: highlightDiff ? '18px' : '2px', transition: '0.3s', boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}></div>
                     </div>
                     {/* Hidden checkbox for accessibility */}
                     <input type="checkbox" checked={highlightDiff} onChange={() => setHighlightDiff(!highlightDiff)} style={{ display: 'none' }} />
