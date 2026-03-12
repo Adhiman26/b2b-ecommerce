@@ -13,6 +13,9 @@ export default function PDP() {
     const [isDocDrawerOpen, setIsDocDrawerOpen] = useState(false);
     const [isPartsModalOpen, setIsPartsModalOpen] = useState(false);
     const [isComplianceDrawerOpen, setIsComplianceDrawerOpen] = useState(false);
+    const [specOpen, setSpecOpen] = useState(false);
+    const [descOpen, setDescOpen] = useState(true);
+    const [docsOpen, setDocsOpen] = useState(false);
 
     // Hero Image States
     const [activeHeroTransform, setActiveHeroTransform] = useState('scaleX(1)');
@@ -52,9 +55,9 @@ export default function PDP() {
         }, 800);
     };
 
-    return (
+    const desktopView = (
         <div className="container" style={{ padding: '32px 24px' }}>
-            <div className="grid-2" style={{ gridTemplateColumns: '60% 40%', gap: '32px', alignItems: 'start' }}>
+            <div className="grid-2" style={{ gridTemplateColumns: '3fr 2fr', gap: '32px', alignItems: 'start' }}>
 
                 {/* Left Column: Visuals & Documents */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -332,6 +335,145 @@ export default function PDP() {
                     </div>
                 </div>
             </div>
+        </div>
+    );
+
+    const mobileView = (
+        <div className="mobile-pdp" style={{ maxWidth: '100vw', overflowX: 'hidden', background: '#f5f5f7', paddingBottom: '80px' }}>
+            {/* 1. Swipeable Image Carousel (1:1) */}
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', background: 'white', borderBottom: '1px solid var(--color-border)' }}>
+                <img src="/copeland_scroll_thumbnail_1772967496730.png" alt="Product" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <div style={{ position: 'absolute', bottom: '16px', left: '0', right: '0', display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-blue)' }} />
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#e0e0e0' }} />
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#e0e0e0' }} />
+                </div>
+            </div>
+
+            {/* 2. Product Identity Block */}
+            <div style={{ padding: '20px 16px', background: 'white', borderBottom: '1px solid var(--color-border)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                    <span style={{ background: '#e6f7ed', color: '#1a7f37', fontSize: '11px', fontWeight: '800', padding: '4px 10px', borderRadius: '20px', letterSpacing: '0.05em' }}>IN STOCK</span>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '12px', fontWeight: '600' }}>SKU: {part.sku}</span>
+                </div>
+                <h1 style={{ fontSize: '20px', fontWeight: '700', lineHeight: '1.3', color: 'var(--text-main)', marginBottom: '12px' }}>{part.name}</h1>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                   <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontWeight: '500' }}>Mfr Part:</span>
+                   <span style={{ fontWeight: '700', fontSize: '13px', color: 'var(--text-main)', fontFamily: 'monospace' }}>ZPS51K5E-PFV-830</span>
+                </div>
+            </div>
+
+            {/* 3. The Accordion Stack */}
+            <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--color-border)' }}>
+                
+                {/* 3.1 Product Description (Open by Default) */}
+                <div style={{ background: 'white' }}>
+                    <button 
+                        onClick={() => setDescOpen(!descOpen)}
+                        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 16px', border: 'none', background: 'transparent', cursor: 'pointer' }}
+                    >
+                        <span style={{ fontWeight: '700', fontSize: '15px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Product Description</span>
+                        <Maximize size={18} style={{ transform: descOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: 'var(--text-secondary)' }} />
+                    </button>
+                    {descOpen && (
+                        <div style={{ padding: '0 16px 20px', color: 'var(--text-main)', fontSize: '14px', lineHeight: '1.6' }}>
+                            Copeland Scroll Z-Series compressors are designed for high efficiency and reliability in residential and commercial air conditioning applications. Featuring advanced scroll technology for quieter operation and longer life.
+                        </div>
+                    )}
+                </div>
+
+                {/* 3.2 Technical Specifications (Stacked List) */}
+                <div style={{ background: 'white' }}>
+                    <button 
+                        onClick={() => setSpecOpen(!specOpen)}
+                        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 16px', border: 'none', background: 'transparent', cursor: 'pointer' }}
+                    >
+                        <span style={{ fontWeight: '700', fontSize: '15px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Technical Specifications</span>
+                        <Maximize size={18} style={{ transform: specOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: 'var(--text-secondary)' }} />
+                    </button>
+                    {specOpen && (
+                        <div style={{ padding: '0 16px 16px' }}>
+                            {part.specs.map((s, idx) => (
+                                <div key={idx} style={{ padding: '12px 0', borderBottom: idx !== part.specs.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
+                                    <div style={{ color: 'var(--text-secondary)', fontSize: '10px', textTransform: 'uppercase', fontWeight: 'bold', marginBottom: '4px' }}>{s.k}</div>
+                                    <div style={{ fontWeight: '700', color: 'var(--text-main)', fontSize: '14px' }}>{s.v}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* 3.3 Downloads & Resources */}
+                <div style={{ background: 'white' }}>
+                    <button 
+                        onClick={() => setDocsOpen(!docsOpen)}
+                        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 16px', border: 'none', background: 'transparent', cursor: 'pointer' }}
+                    >
+                        <span style={{ fontWeight: '700', fontSize: '15px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Downloads & Resources</span>
+                        <Maximize size={18} style={{ transform: docsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: 'var(--text-secondary)' }} />
+                    </button>
+                    {docsOpen && (
+                        <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', border: '1px solid var(--color-border)', borderRadius: '8px' }}>
+                                <FileArchive color="var(--color-blue)" size={22} />
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontWeight: 'bold', fontSize: '13px' }}>Technical Manual</div>
+                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>PDF • 2.4 MB</div>
+                                </div>
+                                <Download size={18} color="var(--text-secondary)" />
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', border: '1px solid var(--color-border)', borderRadius: '8px' }}>
+                                <FileText color="var(--color-blue)" size={22} />
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontWeight: 'bold', fontSize: '13px' }}>Wiring Diagram</div>
+                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>IMG • 1.1 MB</div>
+                                </div>
+                                <Download size={18} color="var(--text-secondary)" />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* 4. Cross Sell Carousel */}
+            <div style={{ marginTop: '8px', background: 'white', padding: '20px 16px' }}>
+                <h3 style={{ fontWeight: '700', fontSize: '15px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>Recommended Components</h3>
+                <div style={{ display: 'flex', gap: '14px', overflowX: 'auto', paddingBottom: '8px', scrollSnapType: 'x mandatory' }}>
+                    {[1, 2, 3].map(i => (
+                        <div key={i} style={{ minWidth: '150px', border: '1px solid var(--color-border)', borderRadius: '8px', padding: '12px', scrollSnapAlign: 'start', background: 'white' }}>
+                            <img src="/copeland_scroll_thumbnail_1772967496730.png" alt="Part" style={{ width: '100%', height: '80px', objectFit: 'contain', marginBottom: '12px' }} />
+                            <div style={{ fontSize: '12px', fontWeight: '600', height: '32px', overflow: 'hidden', lineHeight: '1.3' }}>ZPS-Dual Cap 45+5 MFD</div>
+                            <div style={{ fontSize: '14px', color: 'var(--color-blue)', fontWeight: '800', marginTop: '6px' }}>₹2,450</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 5. Sticky Action Footer */}
+            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, height: '76px', background: 'white', borderTop: '2px solid #0f172a', display: 'flex', alignItems: 'center', padding: '0 16px', gap: '12px', zIndex: 1000, boxShadow: '0 -4px 20px rgba(0,0,0,0.1)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ fontSize: '18px', fontWeight: '800', color: 'var(--color-blue)' }}>₹{(part.price * 1.35).toLocaleString('en-IN')}</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 'bold', textTransform: 'uppercase' }}>Plus GST</div>
+                </div>
+                <button 
+                    className="btn btn-primary" 
+                    style={{ flex: 1, height: '52px', fontWeight: '800', fontSize: '15px', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#0ea5e9', border: 'none', borderRadius: '8px', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.3)' }}
+                    onClick={() => { addToCart(part, qty); alert('Added to Enquiry') }}
+                >
+                    Add to Enquiry
+                </button>
+            </div>
+        </div>
+    );
+
+    return (
+        <>
+            <div className="desktop-only">
+                {desktopView}
+            </div>
+            <div className="mobile-only">
+                {mobileView}
+            </div>
 
             {/* --- Document Library Side Drawer --- */}
             {isDocDrawerOpen && (
@@ -589,7 +731,7 @@ export default function PDP() {
             )}
 
             {/* Engineer Chat Floating Widget */}
-            <div style={{ position: 'fixed', bottom: '32px', right: '32px', zIndex: 1000 }}>
+            <div style={{ position: 'fixed', bottom: '92px', right: '16px', zIndex: 1001 }}>
                 <button
                     style={{ backgroundColor: '#1e293b', color: 'white', border: 'none', borderRadius: '32px', padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '15px', fontWeight: 'bold', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', cursor: 'pointer', transition: 'transform 0.2s', outline: 'none' }}
                     onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'}
@@ -608,6 +750,6 @@ export default function PDP() {
                     z-index: 100;
                 }
             `}} />
-        </div>
+        </>
     );
 }

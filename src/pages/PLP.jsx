@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useStore } from '../store';
-import { ShoppingCart, CheckCircle, AlertTriangle, Filter, Copy, LayoutGrid, List } from 'lucide-react';
+import { ShoppingCart, CheckCircle, Filter, LayoutGrid, List, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function PLP() {
     const navigate = useNavigate();
     const { addToCart } = useStore();
-    const [quantities, setQuantities] = useState({});
     const [compareList, setCompareList] = useState([]);
     const [viewMode, setViewMode] = useState('grid');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -30,7 +29,6 @@ export default function PLP() {
         });
     };
 
-    const handleQtyChange = (id, val) => setQuantities(prev => ({ ...prev, [id]: val }));
     const toggleCompare = (id) => setCompareList(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
     const products = [
@@ -47,326 +45,271 @@ export default function PLP() {
         const passPhase = filters.phase.length === 0 || filters.phase.some(ph => p.specs.includes(ph));
         const passRef = filters.refrigerant.length === 0 || filters.refrigerant.some(r => p.specs.includes(r));
         const passBrand = filters.brand.length === 0 || filters.brand.some(b => p.name.includes(b));
-
         return passTonnage && passVoltage && passPhase && passRef && passBrand;
     });
 
-    return (
-        <div className="container" style={{ padding: '32px 24px' }}>
-            <h1 style={{ marginBottom: '8px' }}>Compressors</h1>
-            <div className="mobile-only" style={{ marginBottom: '16px' }}>
-                <button className="btn btn-secondary" style={{ width: '100%' }} onClick={() => setIsFilterOpen(true)}>
-                    <Filter size={16} /> Filters
-                </button>
-            </div>
-
-            <div style={{ display: 'flex', gap: '8px', color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '13px' }}>
-                <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> &raquo; <Link to="/plp" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Commercial Equipment</Link> &raquo; <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>Compressors</span>
-            </div>
-
-            <div className="grid-2" style={{ gridTemplateColumns: '280px 1fr', gap: '32px', alignItems: 'start' }}>
-
-                {/* Left Sidebar: Technical Faceted Navigation */}
-                <div className="card desktop-only">
-                    <div className="card-header" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <Filter size={16} /> <h2 style={{ fontSize: '16px' }}>Technical Filters</h2>
-                    </div>
-                    <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-
-                        <div>
-                            <strong style={{ display: 'block', marginBottom: '8px' }}>Tonnage</strong>
-                            {['3 Ton', '5 Ton', '7.5 Ton', '10 Ton'].map(t => (
-                                <label key={t} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={filters.tonnage.includes(t)} onChange={() => handleFilterChange('tonnage', t)} />
-                                    <span style={{ fontSize: '14px', fontWeight: 600 }}>{t}</span>
-                                </label>
-                            ))}
-                        </div>
-
-                        <div>
-                            <strong style={{ display: 'block', marginBottom: '8px' }}>Voltage</strong>
-                            {['208/230V', '460V', '575V'].map(v => (
-                                <label key={v} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={filters.voltage.includes(v)} onChange={() => handleFilterChange('voltage', v)} />
-                                    <span style={{ fontSize: '14px', fontWeight: 600 }}>{v}</span>
-                                </label>
-                            ))}
-                        </div>
-
-                        <div>
-                            <strong style={{ display: 'block', marginBottom: '8px' }}>Phase</strong>
-                            {['1-Phase', '3-Phase'].map(ph => (
-                                <label key={ph} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={filters.phase.includes(ph)} onChange={() => handleFilterChange('phase', ph)} />
-                                    <span style={{ fontSize: '14px', fontWeight: 600 }}>{ph}</span>
-                                </label>
-                            ))}
-                        </div>
-
-                        <div>
-                            <strong style={{ display: 'block', marginBottom: '8px' }}>Refrigerant Type</strong>
-                            {['R-410A', 'R-32', 'R-22'].map(r => (
-                                <label key={r} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={filters.refrigerant.includes(r)} onChange={() => handleFilterChange('refrigerant', r)} />
-                                    <span style={{ fontSize: '14px', fontWeight: 600 }}>{r}</span>
-                                </label>
-                            ))}
-                        </div>
-
-                        <div style={{ paddingBottom: '24px' }}>
-                            <strong style={{ display: 'block', marginBottom: '8px' }}>Brand (Secondary)</strong>
-                            {['Copeland', 'Bristol', 'LG', 'Danfoss', 'Trane'].map(b => (
-                                <label key={b} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={filters.brand.includes(b)} onChange={() => handleFilterChange('brand', b)} />
-                                    <span style={{ fontSize: '14px', fontWeight: 600 }}>{b}</span>
-                                </label>
-                            ))}
-                        </div>
-
+    const desktopView = (
+        <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '24px 0' }}>
+            <div className="container" style={{ maxWidth: '1440px' }}>
+                <div style={{ marginBottom: '24px' }}>
+                    <h1 style={{ fontSize: '32px', fontWeight: 700, color: '#0f172a', margin: '0 0 8px 0' }}>Compressors</h1>
+                    <div style={{ display: 'flex', gap: '8px', color: '#64748b', fontSize: '13px' }}>
+                        <Link to="/" style={{ color: '#64748b', textDecoration: 'none' }}>Home</Link> &raquo; 
+                        <Link to="/plp" style={{ color: '#64748b', textDecoration: 'none' }}>Commercial Equipment</Link> &raquo; 
+                        <span style={{ color: '#0f172a', fontWeight: 600 }}>Compressors</span>
                     </div>
                 </div>
 
-                {/* Right Column: High-Density Horizontal List View */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <span style={{ color: 'var(--text-secondary)' }}>Showing {filteredProducts.length} results matching criteria</span>
-                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                            <select style={{ width: 'auto', padding: '6px 12px' }}>
-                                <option>Sort by: OEM Relevance</option>
-                                <option>Sort by: Price (Low to High)</option>
-                                <option>Sort by: Stock Availability</option>
-                            </select>
-                            <div style={{ display: 'flex', border: '1px solid var(--color-border)', borderRadius: '4px', overflow: 'hidden' }}>
-                                <button style={{ padding: '6px 10px', background: viewMode === 'list' ? 'var(--bg-surface)' : 'white', border: 'none', borderRight: '1px solid var(--color-border)', cursor: 'pointer', color: viewMode === 'list' ? 'var(--text-main)' : 'var(--text-secondary)' }} onClick={() => setViewMode('list')} title="List View">
-                                    <List size={18} />
-                                </button>
-                                <button style={{ padding: '6px 10px', background: viewMode === 'grid' ? 'var(--bg-surface)' : 'white', border: 'none', cursor: 'pointer', color: viewMode === 'grid' ? 'var(--text-main)' : 'var(--text-secondary)' }} onClick={() => setViewMode('grid')} title="Grid View">
-                                    <LayoutGrid size={18} />
-                                </button>
-                            </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '32px', alignItems: 'start' }}>
+                    <div className="card" style={{ background: 'white', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
+                        <div className="card-header" style={{ borderBottom: '1px solid #f1f5f9', background: '#f8fafc', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Filter size={16} color="#0f172a" />
+                            <h2 style={{ fontSize: '14px', fontWeight: 700, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Technical Filters</h2>
+                        </div>
+                        <div className="card-body" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            {[
+                                { label: 'Tonnage', options: ['3 Ton', '5 Ton', '7.5 Ton', '10 Ton'], key: 'tonnage' },
+                                { label: 'Voltage', options: ['208/230V', '460V', '575V'], key: 'voltage' },
+                                { label: 'Phase', options: ['1-Phase', '3-Phase'], key: 'phase' },
+                                { label: 'Refrigerant Type', options: ['R-410A', 'R-32', 'R-22'], key: 'refrigerant' },
+                                { label: 'Brand (Secondary)', options: ['Copeland', 'Bristol', 'LG', 'Danfoss', 'Trane'], key: 'brand' }
+                            ].map((group) => (
+                                <div key={group.key}>
+                                    <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>{group.label}</h3>
+                                    {group.options.map(opt => (
+                                        <label key={opt} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', cursor: 'pointer' }}>
+                                            <input 
+                                                type="checkbox" 
+                                                checked={filters[group.key].includes(opt)} 
+                                                onChange={() => handleFilterChange(group.key, opt)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span style={{ fontSize: '13px', fontWeight: 500, color: '#334155' }}>{opt}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            ))}
                         </div>
                     </div>
 
-                    {filteredProducts.length === 0 && (
-                        <div style={{ padding: '32px', textAlign: 'center', color: 'var(--text-secondary)', background: 'var(--bg-surface)', border: '1px solid var(--color-border)', borderRadius: '4px' }}>
-                            No compressors found matching all selected criteria.
-                        </div>
-                    )}
-
-                    {viewMode === 'list' && filteredProducts.length > 0 && (
-                        <div style={{ display: 'flex', padding: '8px 16px', fontSize: '12px', fontWeight: 'bold', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
-                            <div style={{ width: '70px', textAlign: 'center', flexShrink: 0 }}>Compare</div>
-                            <div style={{ paddingLeft: '24px' }}>Product Details</div>
-                        </div>
-                    )}
-
-                    {viewMode === 'list' && filteredProducts.map((p) => {
-                        const isSelected = compareList.includes(p.id);
-                        return (
-                            <div key={p.id} className="card card-body" style={{ display: 'flex', alignItems: 'center', gap: '24px', padding: '16px', backgroundColor: isSelected ? '#f0f9ff' : 'white', borderColor: isSelected ? '#bae6fd' : 'var(--color-border)', transition: 'all 0.2s ease', cursor: 'pointer' }} onClick={() => navigate(`/product/${p.id}`)}>
-
-                                {/* Column 0: Selection Checkbox */}
-                                <div style={{ width: '70px', display: 'flex', justifyContent: 'center', flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
-                                    <input type="checkbox" checked={isSelected} onChange={(e) => { e.stopPropagation(); toggleCompare(p.id); }} onClick={(e) => e.stopPropagation()} style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: 'var(--color-blue)' }} />
-                                </div>
-
-                                {/* Column 1: Thumbnail */}
-                                <div style={{ position: 'relative', width: '130px', flexShrink: 0, border: '1px solid var(--color-border)', borderRadius: '4px', padding: '12px', background: 'white' }}>
-                                    <img src={p.image} style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }} alt={p.name} />
-                                    {p.exactMatch && (
-                                        <div style={{ position: 'absolute', top: '-8px', right: '-8px', background: 'var(--color-green)', color: 'white', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} title="Exact OEM Match">
-                                            <CheckCircle size={14} />
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Column 2: Data Flow (Part #, Copy, Title, Specs) */}
-                                <div style={{ minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0, fontFamily: 'monospace' }}>
-                                            <span style={{ color: 'inherit', textDecoration: 'none' }}>{p.sku}</span>
-                                        </h2>
-                                        <button style={{ color: 'var(--text-secondary)', padding: '2px', background: 'none', border: 'none', cursor: 'pointer' }} title="Copy Part Number" onClick={(e) => e.stopPropagation()}>
-                                            <Copy size={16} />
-                                        </button>
-                                    </div>
-                                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 400 }}>{p.name}</div>
-                                    <div style={{ fontSize: '12px', color: 'var(--text-main)', marginTop: '4px', fontWeight: 600 }}>{p.specs}</div>
-                                </div>
-
-                                {/* Column 3: Stock Status Badge */}
-                                <div style={{ width: '120px', display: 'flex', flexDirection: 'column' }}>
-                                    {p.status === 'green' && <span className="badge badge-green" style={{ width: 'fit-content' }}><CheckCircle size={12} style={{ marginRight: '4px' }} /> {p.stock}</span>}
-                                    {p.status === 'amber' && <span className="badge badge-amber" style={{ width: 'fit-content' }}><AlertTriangle size={12} style={{ marginRight: '4px' }} /> {p.stock}</span>}
-                                    {p.status === 'red' && <span className="badge badge-red" style={{ width: 'fit-content' }}><AlertTriangle size={12} style={{ marginRight: '4px' }} /> {p.stock}</span>}
-                                </div>
-
-                                {/* Column 4: Contract Price */}
-                                <div style={{ width: '120px' }}>
-                                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '2px' }}>Your Price</div>
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                                        ₹{p.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                    </div>
-                                </div>
-
-                                {/* Column 5: Action Zone */}
-                                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }} onClick={(e) => e.stopPropagation()}>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        value={quantities[p.id] || 1}
-                                        onChange={(e) => handleQtyChange(p.id, Number(e.target.value))}
-                                        onClick={(e) => e.stopPropagation()}
-                                        style={{ width: '60px', height: '40px', textAlign: 'center' }}
-                                        disabled={p.status === 'red'}
-                                    />
-                                    <button
-                                        className="btn btn-primary"
-                                        style={{ padding: '8px 16px', height: '40px' }}
-                                        disabled={p.status === 'red'}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            addToCart({ ...p, location: 'Primary Warehouse', oem: 'Mixed' }, quantities[p.id] || 1);
-                                            alert('Added to requisition.')
-                                        }}
-                                    >
-                                        <ShoppingCart size={16} /> Add for enquiry
-                                    </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: '13px', color: '#64748b' }}>Showing {filteredProducts.length} results matching criteria</span>
+                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                <select style={{ padding: '8px 12px', fontSize: '13px', borderRadius: '4px', border: '1px solid #e2e8f0', background: 'white', width: '200px' }}>
+                                    <option>Sort by: OEM Relevance</option>
+                                    <option>Price (Low to High)</option>
+                                </select>
+                                <div style={{ display: 'flex', background: 'white', border: '1px solid #e2e8f0', borderRadius: '4px' }}>
+                                    <button onClick={() => setViewMode('list')} style={{ padding: '6px 10px', background: viewMode === 'list' ? '#f1f5f9' : 'transparent', border: 'none', cursor: 'pointer', borderRight: '1px solid #e2e8f0' }}><List size={18} /></button>
+                                    <button onClick={() => setViewMode('grid')} style={{ padding: '6px 10px', background: viewMode === 'grid' ? '#f1f5f9' : 'transparent', border: 'none', cursor: 'pointer' }}><LayoutGrid size={18} /></button>
                                 </div>
                             </div>
-                        )
-                    })}
+                        </div>
 
-                    {viewMode === 'grid' && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', alignItems: 'stretch' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: viewMode === 'grid' ? 'repeat(3, 1fr)' : '1fr', gap: '20px' }}>
                             {filteredProducts.map((p) => {
                                 const isSelected = compareList.includes(p.id);
+                                const specsDisplay = p.specs.split(' • ').slice(0, 3).join(' | ');
                                 return (
-                                    <div key={p.id} className="card" style={{ display: 'flex', flexDirection: 'column', position: 'relative', backgroundColor: isSelected ? '#f0f9ff' : 'white', borderColor: isSelected ? '#bae6fd' : 'var(--color-border)', transition: 'all 0.2s ease', overflow: 'hidden', cursor: 'pointer' }} onClick={() => navigate(`/product/${p.id}`)}>
+                                    <div key={p.id} className="card" style={{ background: 'white', borderRadius: '4px', border: '1px solid #e2e8f0', position: 'relative', cursor: 'pointer' }} onClick={() => navigate(`/product/${p.id}`)}>
                                         <div style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 10 }} onClick={(e) => e.stopPropagation()}>
-                                            <input type="checkbox" checked={isSelected} onChange={(e) => { e.stopPropagation(); toggleCompare(p.id); }} onClick={(e) => e.stopPropagation()} style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: 'var(--color-blue)', backgroundColor: 'white' }} title="Compare" />
+                                            <input type="checkbox" checked={isSelected} onChange={() => toggleCompare(p.id)} style={{ width: '18px', height: '18px' }} />
                                         </div>
-                                        {p.exactMatch && (
-                                            <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'var(--color-green)', color: 'white', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', zIndex: 10 }} title="Exact OEM Match">
-                                                <CheckCircle size={14} />
-                                            </div>
-                                        )}
-                                        <div style={{ padding: '24px', display: 'flex', justifyContent: 'center', background: 'white', borderBottom: '1px solid var(--color-border)' }}>
-                                            <img src={p.image} alt={p.name} style={{ width: '100%', height: '180px', objectFit: 'contain' }} />
+                                        {p.exactMatch && <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 10 }}><CheckCircle size={20} color="#10b981" fill="#fff" /></div>}
+                                        <div style={{ height: '220px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid #f1f5f9' }}>
+                                            <img src={p.image} alt={p.sku} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                                         </div>
-                                        <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                            <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', marginBottom: '4px', fontFamily: 'monospace' }}>
-                                                <span style={{ color: 'inherit', textDecoration: 'none' }}>{p.sku}</span>
+                                        <div style={{ padding: '20px' }}>
+                                            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', margin: '0 0 4px 0' }}>{p.sku}</h2>
+                                            <p style={{ fontSize: '13px', color: '#64748b', margin: '0 0 16px 0', fontWeight: 400, lineHeight: '1.4' }}>{p.name}</p>
+                                            <div style={{ padding: '8px', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '11px', color: '#334155', fontWeight: 700, marginBottom: '16px', textAlign: 'center' }}>{specsDisplay}</div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                                                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: p.status === 'green' ? '#10b981' : p.status === 'amber' ? '#f59e0b' : '#ef4444' }}></div>
+                                                <span style={{ fontSize: '12px', fontWeight: 600, color: p.status === 'green' ? '#059669' : p.status === 'amber' ? '#d97706' : '#dc2626' }}>{p.stock} (Rabale MIDC)</span>
                                             </div>
-                                            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 400, marginBottom: '12px', minHeight: '38px', lineHeight: '1.4' }}>{p.name}</div>
-                                            <div style={{ background: '#f8fafc', padding: '6px 8px', borderRadius: '4px', fontSize: '12px', color: 'var(--text-main)', fontWeight: 600, border: '1px solid var(--color-border)', marginBottom: '16px', textAlign: 'center' }}>
-                                                {p.specs.split(' • ').slice(0, 3).join(' | ')}
-                                            </div>
-                                            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }} onClick={(e) => e.stopPropagation()}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                                    {p.status === 'green' && <span style={{ fontSize: '12px', color: 'var(--color-green)', fontWeight: 600 }}>● {p.stock} (Rabale MIDC)</span>}
-                                                    {p.status === 'amber' && <span style={{ fontSize: '12px', color: 'var(--color-amber)', fontWeight: 600 }}>● {p.stock} (Rabale MIDC)</span>}
-                                                    {p.status === 'red' && <span style={{ fontSize: '12px', color: 'var(--color-red)', fontWeight: 600 }}>● {p.stock} (Rabale MIDC)</span>}
-
-                                                    <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#0f172a', marginTop: '2px' }}>
-                                                        ₹{p.price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    className="btn btn-primary"
-                                                    style={{ width: '100%', padding: '12px', height: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}
-                                                    disabled={p.status === 'red'}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        addToCart({ ...p, location: 'Primary Warehouse', oem: 'Mixed' }, quantities[p.id] || 1);
-                                                        alert('Added to requisition.')
-                                                    }}
-                                                >
-                                                    <ShoppingCart size={16} /> Add for enquiry
-                                                </button>
-                                            </div>
+                                            <div style={{ fontSize: '24px', fontWeight: 600, color: '#0f172a', marginBottom: '16px' }}>₹{p.price.toLocaleString('en-IN')}.00</div>
+                                            <button className="btn btn-primary" style={{ width: '100%', height: '44px', fontWeight: 700 }} onClick={(e) => { e.stopPropagation(); addToCart(p, 1); }}>Add for enquiry</button>
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
-                    )}
+                    </div>
                 </div>
+            </div>
+        </div>
+    );
 
+    const mobileViewContent = (
+        <div style={{ background: '#F2F4F7', minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: '0 8px', width: '100%' }}>
+            <div style={{ padding: '16px 8px 8px 8px' }}>
+                <h1 style={{ fontSize: '18px', margin: 0, fontWeight: 800, color: '#0f172a' }}>Compressors</h1>
+                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600 }}>Showing {filteredProducts.length} results</span>
             </div>
 
-            {/* Floating Comparison Tray */}
-            {
-                compareList.length >= 1 && (
-                    <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#0f172a', color: 'white', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1000, boxShadow: '0 -4px 12px rgba(0,0,0,0.15)' }}>
-                        <div style={{ fontSize: '16px', fontWeight: 600, width: '300px' }}>
-                            {compareList.length} Item{compareList.length !== 1 ? 's' : ''} Selected for Comparison
-                        </div>
-                        <div style={{ display: 'flex', gap: '12px', flex: 1, justifyContent: 'center' }}>
-                            {compareList.map(id => {
-                                const p = products.find(prod => prod.id === id);
-                                if (!p) return null;
-                                return (
-                                    <div key={id} style={{ width: '40px', height: '40px', background: 'white', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.2)', padding: '2px', flexShrink: 0 }}>
-                                        <img src={p.image} alt={p.sku} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: '140px', gap: '8px', width: '100%' }}>
+                {filteredProducts.map((p) => {
+                    const isSelected = compareList.includes(p.id);
+                    const techPills = p.specs.split(' • ');
+                    
+                    return (
+                        <div key={p.id} style={{ 
+                            display: 'flex', background: 'white', border: '1px solid #e2e8f0',
+                            borderRadius: '6px', alignItems: 'stretch', minHeight: '90px', overflow: 'hidden',
+                            width: '100%'
+                        }} onClick={() => navigate(`/product/${p.id}`)}>
+                            {/* Image Block */}
+                            <div style={{ width: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
+                                <div style={{ width: '70px', height: '70px', background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '4px', padding: '6px' }}>
+                                    <img src={p.image} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="" />
+                                </div>
+                            </div>
+
+                            {/* Identity Block */}
+                            <div style={{ flex: 1, padding: '12px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '4px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                    <h2 style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'monospace', color: '#0f172a', margin: 0 }}>{p.sku}</h2>
+                                    <div onClick={(e) => { e.stopPropagation(); toggleCompare(p.id); }}>
+                                        <input type="checkbox" checked={isSelected} readOnly style={{ width: '18px', height: '18px', accentColor: '#0ea5e9' }} />
                                     </div>
-                                );
+                                </div>
+                                <div style={{ fontSize: '12px', color: '#475569', fontWeight: '400', lineHeight: '1.2' }}>{p.name.split(' ').slice(0, 5).join(' ')}...</div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '2px' }}>
+                                    {techPills.map((pill, idx) => (
+                                        <span key={idx} style={{ background: '#f1f5f9', color: '#64748b', fontSize: '10px', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>
+                                            {pill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Action Block */}
+                            <div style={{ width: '90px', display: 'flex', flexDirection: 'column', borderLeft: '1px solid #f1f5f9' }}>
+                                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 600, color: '#0f172a', padding: '4px' }}>
+                                    ₹{p.price.toLocaleString('en-IN')}
+                                </div>
+                                <button 
+                                    style={{ 
+                                        height: '48px', width: '100%', background: '#0ea5e9', border: 'none', 
+                                        color: 'white', fontWeight: 800, fontSize: '12px', textTransform: 'uppercase'
+                                    }} 
+                                    onClick={(e) => { e.stopPropagation(); addToCart(p, 1); }}
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Mobile Command Dock */}
+            <div style={{ 
+                position: 'fixed', bottom: 72, left: 0, right: 0, 
+                display: 'flex', background: 'white', zIndex: 1000, 
+                borderTop: '2px solid #0f172a', height: '60px', boxShadow: '0 -4px 12px rgba(0,0,0,0.1)'
+            }}>
+                <button style={{ flex: 1, height: '100%', background: 'white', border: 'none', fontWeight: 800, fontSize: '13px', borderRight: '1px solid #e2e8f0' }} onClick={() => setIsFilterOpen(true)}>
+                    🎚️ Filter
+                </button>
+                <button style={{ flex: 1, height: '100%', background: 'white', border: 'none', fontWeight: 800, fontSize: '13px', borderRight: '1px solid #e2e8f0' }}>
+                    ↕️ Sort
+                </button>
+                <Link 
+                    to={compareList.length >= 2 ? "/compare" : "#"}
+                    style={{ 
+                        flex: 1.2, height: '100%', background: compareList.length >= 2 ? '#0f172a' : '#f1f5f9', 
+                        color: compareList.length >= 2 ? 'white' : '#94a3b8', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                        textDecoration: 'none', fontWeight: 800, fontSize: '13px', pointerEvents: compareList.length >= 2 ? 'auto' : 'none'
+                    }}
+                >
+                    📑 Compare ({compareList.length})
+                </Link>
+            </div>
+
+            {/* Filter Bottom Sheet */}
+            {isFilterOpen && (
+                <>
+                    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000 }} onClick={() => setIsFilterOpen(false)}></div>
+                    <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', zIndex: 1001, borderTopLeftRadius: '16px', borderTopRightRadius: '16px', padding: '24px', maxHeight: '80vh', overflowY: 'auto' }}>
+                        <div style={{ width: '40px', height: '4px', background: '#cbd5e1', borderRadius: '2px', margin: '0 auto 20px' }}></div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                            <h2 style={{ fontSize: '18px', margin: 0, fontWeight: 800 }}>Filter Catalog</h2>
+                            <button style={{ color: '#0ea5e9', fontWeight: 'bold', background: 'none', border: 'none' }} onClick={() => setIsFilterOpen(false)}>Apply</button>
+                        </div>
+                        {['tonnage', 'voltage', 'phase', 'brand'].map(key => (
+                            <div key={key} style={{ marginBottom: '20px' }}>
+                                <h3 style={{ fontSize: '12px', textTransform: 'uppercase', color: '#64748b', marginBottom: '12px', fontWeight: 800 }}>{key}</h3>
+                                {Array.from(new Set(products.map(p => key === 'brand' ? p.name.split(' ')[0] : p.specs.split(' • ')[0]))).map(opt => (
+                                    <label key={opt} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: '#f8fafc', borderRadius: '8px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
+                                        <input type="checkbox" checked={filters[key]?.includes(opt)} onChange={() => handleFilterChange(key, opt)} style={{ width: '22px', height: '22px' }} />
+                                        <span style={{ fontWeight: '600', color: '#334155' }}>{opt}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+
+    return (
+        <div style={{ background: '#F2F4F7', minHeight: '100vh' }}>
+            <div className="desktop-only">{desktopView}</div>
+            <div className="mobile-only" style={{ width: '100%' }}>{mobileViewContent}</div>
+            {/* Desktop Comparison Tray */}
+            <div className="desktop-only">
+                {compareList.length > 0 && (
+                    <div style={{ 
+                        position: 'fixed', bottom: 0, left: 0, right: 0, 
+                        background: '#0f172a', color: 'white', height: '80px', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        padding: '0 40px', zIndex: 2000, boxShadow: '0 -4px 20px rgba(0,0,0,0.3)'
+                    }}>
+                        <div style={{ fontSize: '16px', fontWeight: 600 }}>
+                            {compareList.length} {compareList.length === 1 ? 'Item' : 'Items'} Selected for Comparison
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                            {compareList.map(id => {
+                                const p = products.find(x => x.id === id);
+                                return p ? (
+                                    <div key={id} style={{ 
+                                        width: '48px', height: '48px', background: 'white', 
+                                        borderRadius: '4px', overflow: 'hidden', padding: '4px',
+                                        border: '2px solid #38bdf8'
+                                    }}>
+                                        <img src={p.image} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="" />
+                                    </div>
+                                ) : null;
                             })}
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', width: '300px', justifyContent: 'flex-end' }}>
-                            <button style={{ background: 'transparent', border: 'none', color: '#cbd5e1', cursor: 'pointer', textDecoration: 'underline', fontSize: '14px' }} onClick={() => setCompareList([])}>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                            <button 
+                                onClick={() => setCompareList([])}
+                                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontWeight: 700, cursor: 'pointer', fontSize: '14px', textDecoration: 'underline' }}
+                            >
                                 Clear All
                             </button>
-                            <Link to="/compare" className="btn btn-primary" style={{ padding: '0 24px', height: '44px', display: 'flex', alignItems: 'center', textDecoration: 'none', fontWeight: 'bold' }}>
-                                Compare Specs &rarr;
+                            <Link 
+                                to="/compare" 
+                                className="btn btn-primary"
+                                style={{ 
+                                    background: '#0ea5e9', padding: '0 24px', height: '44px', 
+                                    display: 'flex', alignItems: 'center', gap: '8px', borderRadius: '4px',
+                                    textDecoration: 'none', color: 'white', fontWeight: 800
+                                }}
+                            >
+                                Compare Specs <ChevronRight size={18} />
                             </Link>
                         </div>
                     </div>
-                )
-            }
-
-            {/* Mobile Filter Bottom Sheet overlay */}
-            {isFilterOpen && <div className="bottom-sheet-overlay" onClick={() => setIsFilterOpen(false)}></div>}
-
-            {/* Mobile Filter Bottom Sheet */}
-            <div className={`bottom-sheet ${isFilterOpen ? 'open' : ''}`} style={{ transform: isFilterOpen ? 'translateY(0)' : 'translateY(100%)' }}>
-                <div className="bottom-sheet-handle"></div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <h2 style={{ fontSize: '18px', margin: 0 }}>Technical Filters</h2>
-                    <button style={{ background: 'none', border: 'none', fontSize: '14px', color: 'var(--color-blue)', fontWeight: 'bold' }} onClick={() => setIsFilterOpen(false)}>Done</button>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <div>
-                        <strong style={{ display: 'block', marginBottom: '8px' }}>Tonnage</strong>
-                        {['3 Ton', '5 Ton', '7.5 Ton', '10 Ton'].map(t => (
-                            <label key={t} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={filters.tonnage.includes(t)} onChange={() => handleFilterChange('tonnage', t)} style={{ width: '24px', height: '24px' }} />
-                                <span style={{ fontSize: '16px', fontWeight: 600 }}>{t}</span>
-                            </label>
-                        ))}
-                    </div>
-                    <div>
-                        <strong style={{ display: 'block', marginBottom: '8px' }}>Voltage</strong>
-                        {['208/230V', '460V', '575V'].map(v => (
-                            <label key={v} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={filters.voltage.includes(v)} onChange={() => handleFilterChange('voltage', v)} style={{ width: '24px', height: '24px' }} />
-                                <span style={{ fontSize: '16px', fontWeight: 600 }}>{v}</span>
-                            </label>
-                        ))}
-                    </div>
-                    <div style={{ paddingBottom: '72px' }}>
-                        <strong style={{ display: 'block', marginBottom: '8px' }}>Brand (Secondary)</strong>
-                        {['Copeland', 'Bristol', 'LG', 'Danfoss', 'Trane'].map(b => (
-                            <label key={b} style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={filters.brand.includes(b)} onChange={() => handleFilterChange('brand', b)} style={{ width: '24px', height: '24px' }} />
-                                <span style={{ fontSize: '16px', fontWeight: 600 }}>{b}</span>
-                            </label>
-                        ))}
-                    </div>
-                </div>
+                )}
             </div>
-
-        </div >
+        </div>
     );
 }

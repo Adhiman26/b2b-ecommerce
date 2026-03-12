@@ -1,33 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 :root {
-  --bg-canvas: #f4f6f8;
+  --bg-canvas: #f9fafb;
   --bg-surface: #ffffff;
-  --text-main: #1f2937;
-  --text-secondary: #6b7280;
+  --text-main: #0f172a;
+  --text-secondary: #475569;
 
   /* Functional Colors per Brief */
   --color-blue: #0ea5e9;
-  /* Primary Corporate Action */
   --color-green: #10b981;
-  /* In-Stock/Next-Day */
   --color-amber: #f59e0b;
-  /* Low Stock/Pending */
   --color-red: #ef4444;
-  /* Out of Stock/Missing Specs */
 
-  --color-border: #d1d5db;
+  --color-border: #cbd5e1;
   --color-accent: #0f172a;
 
-  --color-blue-light: #e0f2fe;
-  --color-green-light: #d1fae5;
-  --color-amber-light: #fef3c7;
-  --color-red-light: #fee2e2;
+  --color-blue-light: #f0f9ff;
+  --color-green-light: #f0fdf4;
+  --color-amber-light: #fffbeb;
+  --color-red-light: #fef2f2;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --radius-sm: 4px;
+  --radius-md: 8px;
 }
 
 * {
@@ -334,12 +330,13 @@ select:focus {
     right: 0;
     height: 72px;
     background: #ffffff;
-    border-top: 1px solid var(--color-border);
+    border-top: 2px solid var(--color-border);
     display: flex;
     justify-content: space-around;
     align-items: center;
     z-index: 1000;
-    padding-bottom: env(safe-area-inset-bottom, 12px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
   }
 
   .bottom-tab-item {
@@ -347,17 +344,22 @@ select:focus {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    color: var(--text-secondary);
+    gap: 6px;
+    color: #64748b;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     flex: 1;
     height: 100%;
+    transition: all 0.2s;
   }
 
   .bottom-tab-item.active {
     color: var(--color-blue);
+  }
+
+  .bottom-tab-item:active {
+    background: #f8fafc;
   }
 
   .mobile-header {

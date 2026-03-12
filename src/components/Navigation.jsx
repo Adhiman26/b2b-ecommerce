@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, User, ScanBarcode, FileText, CheckCircle, PackageSearch, FileSignature, Camera, X, ImageIcon, Bell } from 'lucide-react';
+import { Search, ShoppingCart, User, ScanBarcode, FileText, CheckCircle, PackageSearch, FileSignature, Camera, X, ImageIcon, Bell, Headset } from 'lucide-react';
 import { useStore } from '../store';
 
 export default function Navigation() {
@@ -98,28 +98,21 @@ export default function Navigation() {
             {/* Mobile Bottom Tab Bar */}
             <nav className="bottom-tab-bar mobile-only">
                 <Link to="/" className="bottom-tab-item active">
-                    <Search size={22} />
+                    <Search size={24} />
                     <span>Home</span>
                 </Link>
                 <div className="bottom-tab-item" onClick={() => setIsImageSearchOpen(true)}>
-                    <Camera size={22} />
+                    <Camera size={24} />
                     <span>Search</span>
                 </div>
                 <Link to="/quote" className="bottom-tab-item">
-                    <FileSignature size={22} />
-                    <span>Quotes</span>
+                    <FileSignature size={24} />
+                    <span>My Quotes</span>
                 </Link>
-                <Link to="/checkout" className="bottom-tab-item" style={{ position: 'relative' }}>
-                    <ShoppingCart size={22} />
-                    {itemCount > 0 && (
-                        <span style={{ position: 'absolute', top: '10px', right: '14px', background: 'var(--color-red)', color: 'white', fontSize: '10px', width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>{itemCount}</span>
-                    )}
-                    <span>Cart</span>
-                </Link>
-                <Link to="/" className="bottom-tab-item">
-                    <User size={22} />
-                    <span>Account</span>
-                </Link>
+                <div className="bottom-tab-item" onClick={() => alert('Initiating Live Engineering Support...')}>
+                    <Headset size={24} />
+                    <span>Support</span>
+                </div>
             </nav>
 
             {/* Image Search Modal - Inspired by Google Lens */}
